@@ -1,0 +1,21 @@
+{
+  "name": "HAVEN AUTO PAYROLL",
+  "short_name": "HAVEN PAYROLL",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0A1931",
+  "theme_color": "#D4AF37",
+  "description": "Haven Auto Payroll - Professional Payroll System",
+  "icons": [
+    {
+      "src": "icons/Icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/Icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
