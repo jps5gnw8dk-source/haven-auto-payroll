@@ -1,1 +1,76 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HAVEN AUTO</title><style>body{margin:0;font-family:system-ui;background:#0a0a0a;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center}.card{background:#1a1a1a;padding:40px 28px;border-radius:24px;border:1px solid #FFD700;width:85%;max-width:360px}h1{color:#FFD700;margin:0;font-size:32px}.btn{background:#FFD700;color:#000;padding:14px 28px;border-radius:12px;font-weight:900;text-decoration:none;display:inline-block;margin-top:18px}</style></head><body><div class="card"><p style="color:#FFD700;background:#FFD70022;display:inline-block;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:800">● LIVE ON VERCEL</p><h1>HAVEN AUTO</h1><h2>PAYROLL</h2><p>Tanga 🇹🇿<br>Deployed from iPhone<br><br><b style="color:#FFD700">Ready & Online</b></p><a class="btn" href="#">LAUNCH APP →</a></div></body></html>
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HAVEN AUTO - PAYROLL</title>
+<style>
+:root{--gold:#FFD700;--bg:#0a0a0a;--card:#151515;--line:#222}
+*{box-sizing:border-box;font-family:system-ui,-apple-system}
+body{margin:0;background:var(--bg);color:#fff;padding:16px}
+.h{color:var(--gold);font-weight:900;font-size:28px;margin:8px 0 2px}
+.sub{opacity:.7;font-size:13px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.box b{color:var(--gold);font-size:22px;display:block}
+.card{background:var(--card);border:1px solid #FFD70044;border-radius:20px;padding:16px;margin-bottom:14px}
+input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:#fff;margin:6px 0}
+.btn{background:var(--gold);color:#000;border:0;padding:13px 18px;border-radius:12px;font-weight:900;width:100%;margin-top:8px}
+.btn2{background:#222;color:#fff;border:1px solid #333;padding:10px;border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:var(--gold);text-align:left;padding:8px;border-bottom:1px solid #222}
+td{padding:10px 8px;border-bottom:1px solid #111}
+.pill{background:#FFD70022;color:var(--gold);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800}
+</style></head>
+<body>
+<div class="h">HAVEN AUTO</div><div class="sub">PAYROLL • Tanga 🇹🇿 • Live on Vercel</div>
+
+<div class="grid">
+<div class="box"><span>Wafanyakazi</span><b id="cEmp">0</b></div>
+<div class="box"><span>Jumla Mshahara</span><b id="cPay">0 TZS</b></div>
+</div>
+
+<div class="card">
+<b style="color:var(--gold)">+ Ongeza Mfanyakazi</b>
+<input id="name" placeholder="Jina - mf: Juma Hassan">
+<select id="pos"><option>Mechanic</option><option>Driver</option><option>Sales</option><option>Admin</option><option>Manager</option></select>
+<input id="basic" type="number" placeholder="Mshahara Msingi - mf: 800000">
+<input id="allow" type="number" placeholder="Posho - mf: 150000">
+<button class="btn" onclick="addEmp()">HIFADHI MFANYAKAZI →</button>
+</div>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center"><b>Orodha ya Mishahara</b><span class="pill" id="month"></span></div>
+<div style="overflow:auto;margin-top:10px">
+<table id="tbl"><thead><tr><th>Jina</th><th>Nafasi</th><th>Mshahara</th><th>Action</th></tr></thead><tbody></tbody></table>
+</div>
+<button class="btn2" style="width:100%;margin-top:12px" onclick="clearAll()">Futa Wote</button>
+</div>
+
+<div id="slip" class="card" style="display:none"></div>
+
+<script>
+let emps=JSON.parse(localStorage.getItem('haven_emps')||'[]');
+document.getElementById('month').innerText=new Date().toLocaleDateString('sw-TZ',{month:'long',year:'numeric'});
+function render(){
+ document.getElementById('cEmp').innerText=emps.length;
+ let total=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);
+ document.getElementById('cPay').innerText=total.toLocaleString()+' TZS';
+ let tb=document.querySelector('#tbl tbody');tb.innerHTML='';
+ emps.forEach((e,i)=>{
+   tb.innerHTML+=`<tr><td><b>${e.name}</b></td><td>${e.pos}</td><td>${(Number(e.basic)+Number(e.allow)).toLocaleString()}</td><td><button class="btn2" onclick="payslip(${i})">Payslip</button> <button class="btn2" onclick="del(${i})">×</button></td></tr>`;
+ });
+ localStorage.setItem('haven_emps',JSON.stringify(emps));
+}
+function addEmp(){
+ let n=document.getElementById('name').value,b=document.getElementById('basic').value,a=document.getElementById('allow').value||0,p=document.getElementById('pos').value;
+ if(!n||!b)return alert('Jaza Jina na Mshahara!');
+ emps.push({name:n,pos:p,basic:b,allow:a});document.getElementById('name').value='';document.getElementById('basic').value='';document.getElementById('allow').value='';render();
+}
+function del(i){if(confirm('Futa huyu?')){emps.splice(i,1);render()}}
+function clearAll(){if(confirm('Futa wafanyakazi wote?')){emps=[];render()}}
+function payslip(i){
+ let e=emps[i];let gross=Number(e.basic)+Number(e.allow);let paye=Math.round(gross*0.09);let net=gross-paye;
+ document.getElementById('slip').style.display='block';
+ document.getElementById('slip').innerHTML=`<b style="color:var(--gold)">PAYSLIP - ${e.name}</b><br><br>Mshahara Msingi: ${Number(e.basic).toLocaleString()}<br>Posho: ${Number(e.allow).toLocaleString()}<br><b>Jumla: ${gross.toLocaleString()} TZS</b><br>PAYE (9%): -${paye.toLocaleString()}<br><br><b style="color:var(--gold);font-size:18px">Net: ${net.toLocaleString()} TZS</b><br><br><span style="font-size:11px;opacity:.6">Haven Auto • Tanga • ${new Date().toLocaleDateString()}</span><br><br><button class="btn" onclick="window.print()">PRINT / PDF →</button>`;
+ window.scrollTo(0,document.body.scrollHeight);
+}
+render();
+</script>
+</body></html>
