@@ -1,153 +1,220 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>HAVEN AUTO-PAY</title>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HAVEN AUTO-PAY - Vyeo + Bank</title>
 <style>
-*{box-sizing:border-box;font-family:-apple-system,Inter,system-ui;margin:0}body{background:#f0f3f9;color:#0f1f3d;display:flex;min-height:100vh;padding-bottom:80px}
-.sidebar{width:220px;background:#0f1f3d;color:#fff;padding:18px 0;position:fixed;height:100vh;overflow:auto}
-.sidebar h2{padding:0 16px;font-size:18px;display:flex;gap:8px;align-items:center}.sidebar h2 span{background:#FF7A00;padding:5px 7px;border-radius:8px}
-.nav{margin-top:18px}.nav div{padding:11px 16px;margin:3px 10px;border-radius:10px;cursor:pointer;opacity:.8;display:flex;gap:10px;font-size:14px}.nav div.active{background:#FF7A00;opacity:1;font-weight:800}
-.main{margin-left:220px;flex:1;padding:14px;width:calc(100% - 220px)}
-.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:#fff;padding:12px 14px;border-radius:14px;box-shadow:0 2px 10px #0001}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:12px 0}
-.card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 10px #0001;border:1px solid #eef2f7}
-.card h4{font-size:11px;opacity:.6;margin-bottom:4px}.amt{font-size:20px;font-weight:900}
-.btnO{background:#FF7A00;color:#fff;border:0;padding:10px 14px;border-radius:10px;font-weight:800;cursor:pointer}.btnD{background:#0f1f3d;color:#fff;border:0;padding:8px 12px;border-radius:8px}
-table{width:100%;border-collapse:collapse;font-size:13px}th{color:#888;padding:8px 6px;border-bottom:1px solid #eee;text-align:left;font-size:11px}td{padding:9px 6px;border-bottom:1px solid #f3f3f3}
-.badge{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:800}.paid{background:#dcfce7;color:#166534}
-input,select{width:100%;padding:10px;border-radius:10px;border:1px solid #ddd;margin:4px 0;font-size:14px}
+*{box-sizing:border-box;font-family:-apple-system,system-ui}body{margin:0;background:#f0f3f9;display:flex;min-height:100vh}
+.sidebar{width:200px;background:#0f1f3d;color:#fff;display:flex;flex-direction:column;padding:16px 0;position:fixed;left:0;top:0;bottom:0;z-index:10}
+.logo{padding:0 16px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #ffffff22;margin-bottom:10px}
+.logo b{font-size:18px;line-height:18px}.logo span{background:#FF7A00;padding:8px 10px;border-radius:10px}
+.menu{display:flex;flex-direction:column;gap:4px;padding:0 10px}.menu div{padding:11px 12px;border-radius:10px;cursor:pointer;font-size:13px;opacity:.8;display:flex;gap:8px;align-items:center}.menu div.active{background:#FF7A00;opacity:1;font-weight:900;color:#fff}
+.admin{margin-top:auto;padding:12px 16px;font-size:11px;opacity:.5;border-top:1px solid #ffffff22}
+.main{margin-left:200px;flex:1;padding:14px;width:calc(100% - 200px)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;padding:12px;border-radius:12px;margin-bottom:12px;flex-wrap:wrap}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px #0001}
+.btnO{background:#FF7A00;color:#fff;border:0;padding:10px 14px;border-radius:10px;font-weight:800;cursor:pointer;width:100%;margin-top:8px}
+.btnS{background:#0f1f3d;color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
 .tab{display:none}.tab.active{display:block}
-.bottomNav{display:none;position:fixed;bottom:0;left:0;right:0;background:#0f1f3d;color:#fff;display:flex;justify-content:space-around;padding:8px 0;z-index:50;border-top:2px solid #FF7A00}
-.bottomNav div{font-size:10px;text-align:center;opacity:.7;padding:4px 8px;border-radius:8px}.bottomNav div.active{opacity:1;background:#FF7A00}
-#login{position:fixed;inset:0;background:#0f1f3df0;z-index:100;display:flex;align-items:center;justify-content:center;padding:16px}
-@media(max-width:800px){.sidebar{display:none}.main{margin-left:0;width:100%}.bottomNav{display:flex}.cards{grid-template-columns:1fr 1fr}}
+input,select{width:100%;padding:10px;border-radius:10px;border:1px solid #ddd;margin:4px 0;font-size:14px}
+.payBox{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f8fafc;padding:10px;border-radius:10px;border:1px dashed #cbd5e1;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:13px}th{padding:8px 6px;border-bottom:1px solid #eee;text-align:left;color:#888;font-size:11px}td{padding:8px 6px;border-bottom:1px solid #f5f5f5}
+#login{position:fixed;inset:0;background:#0f1f3de6;z-index:99;display:flex;align-items:center;justify-content:center;padding:16px}
+.mobMenu{display:none;position:fixed;top:0;left:0;right:0;background:#0f1f3d;color:#fff;padding:10px 14px;z-index:20;justify-content:space-between;align-items:center}
+.mobDrawer{display:none;position:fixed;left:0;top:50px;bottom:0;width:210px;background:#0f1f3d;z-index:19;padding:10px 0;overflow:auto}
+@media(max-width:700px){.sidebar{display:none}.main{margin-left:0;width:100%;padding-top:60px}.mobMenu{display:flex}.mobDrawer.active{display:flex;flex-direction:column}.payBox{grid-template-columns:1fr}}
 </style></head>
 <body>
 
-<div id="login"><div class="card" style="max-width:340px;width:100%"><h3>🔒 HAVEN AUTO-PAY</h3><small>Default: haven123</small><input id="pass" type="password" placeholder="Password"><button class="btnO" style="width:100%;margin-top:8px" onclick="if(pass.value==(localStorage.getItem('haven_pass')||'haven123')){localStorage.setItem('haven_logged','1');login.style.display='none'}else alert('Wrong!')">INGIA →</button></div></div>
+<div id="login"><div class="card" style="max-width:320px;width:100%"><h3>🔒 HAVEN AUTO-PAY</h3><small>Default: haven123</small><input id="pass" type="password" placeholder="Password"><button class="btnO" onclick="if(pass.value==(localStorage.getItem('haven_pass')||'haven123')){localStorage.setItem('haven_logged','1');login.style.display='none'}else alert('Wrong')">INGIA →</button></div></div>
+
+<div class="mobMenu"><div style="display:flex;gap:8px;align-items:center"><span style="background:#FF7A00;padding:6px 8px;border-radius:8px">⚡</span><b>HAVEN AUTO-PAY</b></div><div style="font-size:22px" onclick="document.getElementById('mobDrawer').classList.toggle('active')">☰</div></div>
+<div id="mobDrawer" class="mobDrawer">
+<div style="display:flex;flex-direction:column;gap:4px;padding:0 10px">
+<div style="padding:12px;background:#FF7A00;border-radius:10px;font-weight:900" onclick="showTab('dash');mobDrawer.classList.remove('active')">📊 Dashboard</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('staff');mobDrawer.classList.remove('active')">👥 Staff</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('payroll');mobDrawer.classList.remove('active')">💰 Payroll</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('payments');mobDrawer.classList.remove('active')">💳 Payments</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('banking');mobDrawer.classList.remove('active')">🏦 NMB Bank</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('reports');mobDrawer.classList.remove('active')">📈 Reports</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('settings');mobDrawer.classList.remove('active')">⚙️ Settings</div>
+</div>
+</div>
 
 <div class="sidebar">
-<h2><span>⚡</span> HAVEN</h2>
-<div class="nav">
-<div class="active" onclick="showTab('dash',this)">📊 Dashboard</div>
-<div onclick="showTab('payroll',this)">💰 Payroll</div>
-<div onclick="showTab('staff',this)">👥 Employees</div>
-<div onclick="showTab('payments',this)">💳 Payments</div>
-<div onclick="showTab('banking',this)">🏦 Banking - NMB</div>
-<div onclick="showTab('reports',this)">📈 Reports</div>
-<div onclick="showTab('settings',this)">⚙️ Settings</div>
+<div class="logo"><span>⚡</span><b>HAVEN<br>AUTO-PAY</b></div>
+<div class="menu">
+<div class="active" id="m-dash" onclick="showTab('dash')">📊 Dashboard</div>
+<div id="m-staff" onclick="showTab('staff')">👥 Employees</div>
+<div id="m-payroll" onclick="showTab('payroll')">💰 Payroll</div>
+<div id="m-payments" onclick="showTab('payments')">💳 Payments</div>
+<div id="m-banking" onclick="showTab('banking')">🏦 Banking</div>
+<div id="m-reports" onclick="showTab('reports')">📈 Reports</div>
+<div id="m-settings" onclick="showTab('settings')">⚙️ Settings</div>
+<div onclick="localStorage.clear();location.reload()">🚪 Logout</div>
 </div>
-<div style="padding:16px;font-size:11px;opacity:.5;margin-top:20px">Admin User<br>admin@haven.co.tz<br><br><a style="color:#FF7A00" onclick="localStorage.clear();location.reload()">Logout</a></div>
+<div class="admin">Admin User<br>admin@haven.co.tz</div>
 </div>
 
 <div class="main">
-<div class="top">
-<div><b style="font-size:18px">HAVEN AUTO-PAY</b> <small style="color:#FF7A00">Smart Payroll</small><br><small style="opacity:.6">Tanga 🇹🇿 • <span id="date"></span></small></div>
-<button class="btnO" onclick="runPayroll()">⚡ RUN PAYROLL</button>
-</div>
+<div class="top"><div><small style="color:#FF7A00;font-weight:800">Payroll Engine</small><br><b>Haven Fleet Care • Tanga 🇹🇿 • <span id="date"></span></b></div><button class="btnS" style="background:#FF7A00" onclick="runPayroll()">⚡ RUN PAYROLL NOW</button></div>
 
-<!-- DASHBOARD TAB -->
 <div id="dash" class="tab active">
-<div class="cards">
-<div class="card"><h4>🏦 Company Balance</h4><div class="amt">TZS 6,000,000</div><small style="color:green">+450k this month</small></div>
-<div class="card"><h4>💰 Total Payroll</h4><div class="amt" id="total">TZS 0</div><small><span id="count">0</span> staff</small></div>
-<div class="card"><h4>⏰ Next Run</h4><div class="amt" style="font-size:14px">30 Oct • 09:00 EAT</div><span class="badge paid">NMB Connected</span></div>
+<div class="cards"><div class="card"><small>🏦 Bank Balance</small><div style="font-size:22px;font-weight:900">TZS 6,000,000</div></div><div class="card"><small>💰 Total Payroll</small><div style="font-size:22px;font-weight:900" id="total">TZS 0</div><small><span id="count">0</span> staff</small></div><div class="card"><small>⏰ Next Run</small><div style="font-weight:800">30 Oct 2026</div><small style="color:green">● NMB Connected</small></div></div>
+<div class="card"><small>Staff Status</small><table><thead><tr><th>STAFF</th><th>ROLE</th><th>PAY MODE</th><th>AMOUNT</th></tr></thead><tbody id="staffBody"></tbody></table></div>
 </div>
 
-<div class="cards" style="grid-template-columns:1fr">
-<div class="card"><h4>Payroll Distribution</h4>
-<div style="display:flex;gap:12px;align-items:center;margin-top:8px;flex-wrap:wrap">
-<div style="width:90px;height:90px;border-radius:50%;background:conic-gradient(#FF7A00 40%,#0f1f3d 40% 65%,#4a7ac7 65% 85%,#2fb5b0 85% 100%)"></div>
-<div style="font-size:12px;line-height:20px">
-<div>🟠 Salaries 40% - <b id="sSal">0</b></div>
-<div>🔵 Tax 25% - <b id="sTax">0</b></div>
-<div>🔹 Allowances 20% - <b id="sAllow">0</b></div>
-<div>🟢 Bonuses 15% - <b id="sBon">0</b></div>
-</div>
-</div>
-</div>
-<div class="card"><h4>Staff Auto-Pay Status</h4><table><thead><tr><th>STAFF</th><th>AMOUNT</th><th>STATUS</th><th></th></tr></thead><tbody id="staffBody"></tbody></table></div>
-</div>
-</div>
-
-<!-- PAYROLL TAB -->
-<div id="payroll" class="tab">
-<div class="card"><h3>💰 Payroll - Mishahara</h3><p style="font-size:13px;opacity:.7;margin:8px 0">Orodha kamili ya mishahara na deductions</p>
-<table><thead><tr><th>Jina</th><th>Jumla</th><th>Net</th><th>Action</th></tr></thead><tbody id="payBody"></tbody></table>
-<div style="display:flex;gap:8px;margin-top:12px"><button class="btnO" onclick="exportExcel()">📊 Export Excel</button><button class="btnD" onclick="shareAll()">WhatsApp</button></div>
-</div>
-<div id="slip"></div>
-</div>
-
-<!-- STAFF TAB -->
 <div id="staff" class="tab">
 <div class="card">
-<h3>👥 Employees - Wafanyakazi</h3>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px">
-<input id="name" placeholder="Jina"><select id="pos"><option>Mechanic</option><option>Driver</option><option>Sales</option><option>Admin</option><option>Manager</option></select>
-<input id="basic" type="number" placeholder="Mshahara"><input id="allow" type="number" placeholder="Posho"><input id="phone" placeholder="M-Pesa 0747..." style="grid-column:span 2">
+<h3>👥 Ongeza Mfanyakazi - Vyeo Vyote TZ</h3>
+<input id="name" placeholder="Jina Kamili - mf: Juma Hassan">
+
+<label style="font-size:11px;font-weight:800;margin-top:6px;display:block">Chagua Cheo / Nafasi - Vyeo vyote vya TZ:</label>
+<select id="pos">
+<option value="">-- Chagua Cheo --</option>
+<option>CEO / Mkurugenzi Mkuu</option>
+<option>Managing Director / Mkurugenzi Mtendaji</option>
+<option>General Manager / Meneja Mkuu</option>
+<option>Operations Manager / Meneja Uendeshaji</option>
+<option>Finance Manager / Meneja Fedha</option>
+<option>Accountant / Mhasibu</option>
+<option>Senior Accountant / Mhasibu Mwandamizi</option>
+<option>Chief Accountant</option>
+<option>Auditor / Mkaguzi</option>
+<option>Internal Auditor / Mkaguzi wa Ndani</option>
+<option>External Auditor</option>
+<option>Cashier / Karani wa Fedha</option>
+<option>HR Manager / Meneja Rasilimali Watu</option>
+<option>HR Officer / Afisa Utumishi</option>
+<option>Administrative Officer / Afisa Tawala</option>
+<option>Secretary / Katibu</option>
+<option>Receptionist / Mapokezi</option>
+<option>Security Guard / Askari</option>
+<option>Security Supervisor / Msimamizi wa Ulinzi</option>
+<option>Driver / Dereva</option>
+<option>Fleet Driver / Dereva wa Magari</option>
+<option>Mechanic / Fundi Mitambo</option>
+<option>Senior Mechanic / Fundi Mkuu</option>
+<option>Electrician / Fundi Umeme</option>
+<option>IT Officer / Afisa TEHAMA</option>
+<option>IT Manager / Meneja TEHAMA</option>
+<option>System Administrator</option>
+<option>Software Developer / Mtengenezaji Programu</option>
+<option>Network Engineer</option>
+<option>Sales Manager / Meneja Mauzo</option>
+<option>Sales Representative / Mwakilishi wa Mauzo</option>
+<option>Sales Executive</option>
+<option>Marketing Manager / Meneja Masoko</option>
+<option>Marketing Officer / Afisa Masoko</option>
+<option>Procurement Officer / Afisa Manunuzi</option>
+<option>Store Keeper / Mhifadhi Ghala</option>
+<option>Warehouse Manager / Meneja Ghala</option>
+<option>Inventory Officer</option>
+<option>Cleaner / Msafi</option>
+<option>Cook / Mpishi</option>
+<option>Gardener / Mtunza Bustani</option>
+<option>Lawyer / Wakili / Mwanasheria</option>
+<option>Legal Officer / Afisa Sheria / Hakimu wa Kampuni</option>
+<option>Customer Service Officer / Huduma kwa Wateja</option>
+<option>Customer Care Representative</option>
+<option>Engineer / Mhandisi</option>
+<option>Field Engineer / Mhandisi wa Shambani</option>
+<option>Site Supervisor / Msimamizi wa Mradi</option>
+<option>Foreman / Karani wa Kazi</option>
+<option>Technician / Fundi Sanifu</option>
+<option>Quality Controller / Mdhibiti Ubora</option>
+<option>Research Officer / Afisa Utafiti</option>
+<option>Project Manager / Meneja Mradi</option>
+<option>Project Officer / Afisa Mradi</option>
+<option>Branch Manager / Meneja Tawi</option>
+<option>Assistant Manager / Meneja Msaidizi</option>
+<option>Supervisor / Msimamizi</option>
+<option>Team Leader / Kiongozi wa Timu</option>
+<option>Office Assistant / Msaidizi wa Ofisi</option>
+<option>Intern / Mwanafunzi wa Kazi</option>
+<option>Volunteer / Kujitolea</option>
+<option>Consultant / Mshauri</option>
+<option>Board Member / Mjumbe wa Bodi</option>
+<option>Other / Kingine</option>
+</select>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
+<input id="basic" type="number" placeholder="Mshahara Msingi - 800000">
+<input id="allow" type="number" placeholder="Posho - 150000">
 </div>
-<button class="btnO" style="width:100%;margin-top:8px" onclick="addEmp()">HIFADHI MFANYAKAZI →</button>
+
+<label style="font-size:11px;font-weight:800;margin-top:10px;display:block">💳 Njia ya Malipo:</label>
+<select id="payMethod" onchange="togglePay()">
+<option value="M-Pesa">M-Pesa / Tigo Pesa / Airtel Money</option>
+<option value="Bank">Bank Account / Akaunti ya Benki</option>
+</select>
+
+<div class="payBox" id="mpesaBox">
+<input id="phone" placeholder="Namba ya M-Pesa - 0747 092 240">
+<select id="mobileNet"><option>Vodacom M-Pesa</option><option>Tigo Pesa</option><option>Airtel Money</option><option>HaloPesa</option></select>
+</div>
+
+<div class="payBox" id="bankBox" style="display:none">
+<select id="bankName">
+<option>NMB Bank</option>
+<option>CRDB Bank</option>
+<option>NBC Bank</option>
+<option>Stanbic Bank</option>
+<option>ABSA Bank</option>
+<option>Exim Bank</option>
+<option>Equity Bank</option>
+<option>KCB Bank</option>
+<option>DTB Bank</option>
+<option>Azania Bank</option>
+<option>Other Bank</option>
+</select>
+<input id="accNumber" placeholder="Account Number - 0152xxxxxxx">
+<input id="accName" placeholder="Jina la Akaunti - Juma Hassan" style="grid-column:span 2">
+</div>
+
+<button class="btnO" onclick="addEmp()">💾 HIFADHI MFANYAKAZI →</button>
 </div>
 </div>
 
-<!-- PAYMENTS TAB -->
-<div id="payments" class="tab">
-<div class="card"><h3>💳 Payments - Malipo</h3><small>12 transactions processed via NMB Bank • Total: <b id="payTotal">TZS 0</b></small><div style="margin-top:10px"><button class="btnO" onclick="runPayroll()">⚡ Lipa Wote Sasa - Bulk Pay</button><div style="margin-top:10px" id="payList"></div></div></div>
-</div>
+<div id="payroll" class="tab"><div class="card"><h3>💰 Payroll</h3><table><thead><tr><th>Jina</th><th>Njia</th><th>Net</th><th>Lipa</th></tr></thead><tbody id="payBody"></tbody></table><button class="btnO" style="margin-top:10px" onclick="exportExcel()">📊 Export Excel - Bank + M-Pesa</button></div><div id="slip"></div></div>
+<div id="payments" class="tab"><div class="card"><h3>💳 Payments</h3><div id="payList"></div><button class="btnO" style="margin-top:10px" onclick="runPayroll()">⚡ RUN PAYROLL NOW - Lipa Wote</button></div></div>
+<div id="banking" class="tab"><div class="card"><h3>🏦 NMB Integration - Connected ✓</h3><small>Bulk payment ready for Bank & Mobile</small><br><br><b>Balance: TZS 6,000,000</b><br><b>Payroll: <span id="bankTotal">TZS 0</span></b></div></div>
+<div id="reports" class="tab"><div class="card"><h3>📈 Reports</h3><button class="btnO" onclick="exportExcel()">Download Excel (Bank + Mobile)</button> <button class="btnS" onclick="window.print()">Print PDF</button></div></div>
+<div id="settings" class="tab"><div class="card"><h3>⚙️ Settings</h3><input id="newPass" placeholder="New password"><button class="btnS" onclick="localStorage.setItem('haven_pass',newPass.value);alert('Saved!')">Save</button></div></div>
 
-<!-- BANKING TAB -->
-<div id="banking" class="tab">
-<div class="card"><h3>🏦 NMB Bank Integration</h3><div style="margin-top:10px;padding:10px;background:#f0f9ff;border-radius:10px;border:1px solid #bae6fd"><b>Status: <span style="color:green">Connected ✓</span></b><br><small>Account: **** 2847 • Last synced 2min ago<br>API: Secure • Bulk payments enabled • POPIA Compliant</small></div><div style="margin-top:12px"><b>Company Balance:</b> TZS 6,000,000<br><b>This Month Payroll:</b> <span id="bankTotal">TZS 0</span><br><br><button class="btnO">🔗 Manage NMB Account</button></div></div>
-</div>
-
-<!-- REPORTS TAB -->
-<div id="reports" class="tab">
-<div class="card"><h3>📈 Reports</h3><button class="btnO" onclick="exportExcel()">📥 Download Excel (CSV)</button><button class="btnD" style="margin-left:6px" onclick="window.print()">🖨️ Print PDF</button><div style="margin-top:12px;font-size:12px;opacity:.7">Reports zitajumuisha PAYE, NSSF, Salaries breakdown - Tayari kwa TRA</div></div>
-</div>
-
-<!-- SETTINGS TAB -->
-<div id="settings" class="tab">
-<div class="card"><h3>⚙️ Settings</h3><label style="font-size:12px">Badilisha Password</label><input id="newPass" placeholder="New password"><button class="btnD" onclick="localStorage.setItem('haven_pass',newPass.value);alert('Password changed to: '+newPass.value)">Save Password</button><br><br><label style="font-size:12px">Company Name</label><input value="Haven Auto - Tanga"><br><button class="btnO" style="background:red;margin-top:10px" onclick="if(confirm('Futa data yote?')){localStorage.removeItem('haven_emps');location.reload()}">Futa Data Yote</button></div>
-</div>
-
-</div>
-
-<div class="bottomNav">
-<div class="active" onclick="showTab('dash',this)">📊<br>Dash</div>
-<div onclick="showTab('payroll',this)">💰<br>Pay</div>
-<div onclick="showTab('staff',this)">👥<br>Staff</div>
-<div onclick="showTab('payments',this)">💳<br>Pay</div>
-<div onclick="showTab('banking',this)">🏦<br>Bank</div>
-<div onclick="showTab('settings',this)">⚙️<br>Set</div>
 </div>
 
 <script>
-function showTab(id,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav div,.bottomNav div').forEach(d=>d.classList.remove('active'));if(el)el.classList.add('active');window.scrollTo(0,0)}
+function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.menu div').forEach(m=>m.classList.remove('active'));let el=document.getElementById('m-'+id);if(el)el.classList.add('active');if(window.innerWidth<=700)document.getElementById('mobDrawer').classList.remove('active')}
+function togglePay(){let m=document.getElementById('payMethod').value;document.getElementById('mpesaBox').style.display=m=='M-Pesa'?'grid':'none';document.getElementById('bankBox').style.display=m=='Bank'?'grid':'none'}
 document.getElementById('date').innerText=new Date().toLocaleDateString('sw-TZ',{month:'short',year:'numeric'});
 let emps=JSON.parse(localStorage.getItem('haven_emps')||'[]');
 if(!localStorage.getItem('haven_pass'))localStorage.setItem('haven_pass','haven123');
 if(localStorage.getItem('haven_logged')=='1')document.getElementById('login').style.display='none';
 function render(){
  let total=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);
- document.getElementById('total').innerText='TZS '+total.toLocaleString();document.getElementById('count').innerText=emps.length;
- document.getElementById('bankTotal').innerText='TZS '+total.toLocaleString();document.getElementById('payTotal').innerText='TZS '+total.toLocaleString();
- let sSal=Math.round(total*0.4),sTax=Math.round(total*0.25),sAllow=Math.round(total*0.2),sBon=Math.round(total*0.15);
- document.getElementById('sSal').innerText='TZS '+sSal.toLocaleString();document.getElementById('sTax').innerText='TZS '+sTax.toLocaleString();document.getElementById('sAllow').innerText='TZS '+sAllow.toLocaleString();document.getElementById('sBon').innerText='TZS '+sBon.toLocaleString();
- let tb=document.getElementById('staffBody');let pb=document.getElementById('payBody');let pl=document.getElementById('payList');if(tb)tb.innerHTML='';if(pb)pb.innerHTML='';if(pl)pl.innerHTML='';
+ document.getElementById('total').innerText='TZS '+total.toLocaleString();document.getElementById('count').innerText=emps.length;document.getElementById('bankTotal').innerText='TZS '+total.toLocaleString();
+ let tb=document.getElementById('staffBody'),pb=document.getElementById('payBody'),pl=document.getElementById('payList');if(tb)tb.innerHTML='';if(pb)pb.innerHTML='';if(pl)pl.innerHTML='';
  emps.forEach((e,i)=>{
-   let gross=Number(e.basic)+Number(e.allow);let net=Math.round(gross*0.91);
-   if(tb)tb.innerHTML+=`<tr><td><b>${e.name.slice(0,12)}</b><br><small style="opacity:.6">${e.pos}</small></td><td>${gross.toLocaleString()}</td><td><span class="badge paid">PAID</span></td><td><button onclick="payslip(${i})" style="border:0;background:#eee;border-radius:6px;padding:3px 6px">👁️</button></td></tr>`;
-   if(pb)pb.innerHTML+=`<tr><td>${e.name}</td><td>${gross.toLocaleString()}</td><td>${net.toLocaleString()}</td><td><button onclick="lipamPesa(${i})" style="border:0;background:#FF7A00;color:#fff;border-radius:6px;padding:4px 8px">M-Pesa</button></td></tr>`;
-   if(pl)pl.innerHTML+=`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0"><span>${e.name}</span><span>TZS ${net.toLocaleString()} • <small style="color:green">Paid</small></span></div>`;
+   let g=Number(e.basic)+Number(e.allow),n=Math.round(g*0.91);
+   let payMode=e.payMethod=='Bank'?`🏦 ${e.bankName||'Bank'}`:`📱 ${e.mobileNet||'M-Pesa'}`;
+   let payDetail=e.payMethod=='Bank'?e.accNumber:e.phone;
+   if(tb)tb.innerHTML+=`<tr><td><b>${e.name.slice(0,12)}</b></td><td style="font-size:11px">${e.pos.slice(0,15)}</td><td style="font-size:11px">${payMode}<br><small style="opacity:.6">${payDetail||''}</small></td><td>TZS ${n.toLocaleString()}</td></tr>`;
+   if(pb)pb.innerHTML+=`<tr><td>${e.name}<br><small style="opacity:.6">${e.pos}</small></td><td>${payMode}</td><td>${n.toLocaleString()}</td><td><button onclick="lipamPesa(${i})" style="background:${e.payMethod=='Bank'?'#0f1f3d':'#FF7A00'};color:#fff;border:0;padding:5px 10px;border-radius:6px;font-size:11px">${e.payMethod=='Bank'?'BANK':'M-PESA'}</button></td></tr>`;
+   if(pl)pl.innerHTML+=`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee"><span>${e.name} - ${payMode}</span><span>TZS ${n.toLocaleString()}</span></div>`;
  });
  localStorage.setItem('haven_emps',JSON.stringify(emps));
 }
-function addEmp(){let n=document.getElementById('name').value,b=document.getElementById('basic').value,a=document.getElementById('allow').value||0,p=document.getElementById('pos').value,ph=document.getElementById('phone').value;if(!n||!b)return alert('Jaza jina na mshahara');emps.push({name:n,pos:p,basic:b,allow:a,phone:ph});document.getElementById('name').value='';document.getElementById('basic').value='';document.getElementById('allow').value='';document.getElementById('phone').value='';render();showTab('payroll');alert('✅ '+n+' amehifadhiwa!')}
-function payslip(i){let e=emps[i];let g=Number(e.basic)+Number(e.allow);let net=Math.round(g*0.91);document.getElementById('slip').innerHTML=`<div class="card" style="margin-top:10px"><b>PAYSLIP - ${e.name}</b><br><br>Msingi: ${Number(e.basic).toLocaleString()}<br>Posho: ${Number(e.allow).toLocaleString()}<br><b>Net: ${net.toLocaleString()} TZS</b><br><br><button class="btnO" onclick="window.print()">PRINT PDF</button></div>`;showTab('payroll')}
-function lipamPesa(i){let e=emps[i];let net=Math.round((Number(e.basic)+Number(e.allow))*0.91);let num=e.phone||'0747092240';if(confirm(`Lipa ${e.name} TZS ${net.toLocaleString()} kwenda ${num}?`))window.location.href=`tel:*150*00%23`;}
-function exportExcel(){let csv="Jina,Nafasi,Msingi,Posho,Jumla,Net,Phone\n";emps.forEach(e=>{let g=Number(e.basic)+Number(e.allow);csv+=`${e.name},${e.pos},${e.basic},${e.allow},${g},${Math.round(g*0.91)},${e.phone||''}\n`});let b=new Blob([csv],{type:'text/csv'});let u=URL.createObjectURL(b);let a=document.createElement('a');a.href=u;a.download=`Haven_Payroll_${new Date().toISOString().slice(0,10)}.csv`;a.click()}
-function shareAll(){let t=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);let txt=`*HAVEN AUTO-PAY*%0AWafanyakazi: ${emps.length}%0AJumla: TZS ${t.toLocaleString()}`;window.open(`https://wa.me/?text=${txt}`)}
-function runPayroll(){let t=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);if(!t)return alert('Ongeza wafanyakazi kwanza!');alert(`✅ Bulk Payment Success! ${emps.length} transactions via NMB - TZS ${t.toLocaleString()}`)}
+function addEmp(){
+ let n=name.value,b=basic.value,a=allow.value||0,p=pos.value,method=payMethod.value,ph=phone.value,mNet=mobileNet.value,bank=bankName.value,accNum=accNumber.value,accName=accName.value;
+ if(!n||!b||!p)return alert('Jaza Jina, Cheo na Mshahara!');
+ if(method=='M-Pesa'&&!ph)return alert('Weka namba ya M-Pesa!');
+ if(method=='Bank'&&!accNum)return alert('Weka Account Number ya Bank!');
+ emps.push({name:n,pos:p,basic:b,allow:a,payMethod:method,phone:ph,mobileNet:mNet,bankName:bank,accNumber:accNum,accName:accName});
+ name.value='';basic.value='';allow.value='';phone.value='';accNumber.value='';accName.value='';render();showTab('payroll');alert('✅ '+n+' ('+p+') amehifadhiwa - Kulipwa kwa '+method);
+}
+function lipamPesa(i){let e=emps[i];let net=Math.round((Number(e.basic)+Number(e.allow))*0.91);if(e.payMethod=='Bank'){alert(`🏦 BANK TRANSFER SIMULATION\n\nJina: ${e.name}\nBank: ${e.bankName}\nAcc: ${e.accNumber}\nKiasi: TZS ${net.toLocaleString()}\n\nHii ni demo - Pesa haijatoka kweli!\nUkiunganisha NMB API - Hapa ndipo itatoka kweli.`)}else{alert(`📱 M-PESA SIMULATION\n\nJina: ${e.name}\nNamba: ${e.phone} (${e.mobileNet})\nKiasi: TZS ${net.toLocaleString()}\n\nHii ni demo - Pesa haijatoka kweli!\nUkibonyeza OK itafungua *150*00#`);window.location.href='tel:*150*00%23'}}
+function exportExcel(){let csv="Jina,Cheo,Msingi,Posho,Jumla,Net,Njia ya Malipo,Maelezo,Bank/Account\n";emps.forEach(e=>{let g=Number(e.basic)+Number(e.allow),n=Math.round(g*0.91),detail=e.payMethod=='Bank'?`${e.bankName} - ${e.accNumber}`:`${e.mobileNet} - ${e.phone}`;csv+=`"${e.name}","${e.pos}",${e.basic},${e.allow},${g},${n},${e.payMethod},"${detail}","${e.accName||''}"\n`});let b=new Blob([csv],{type:'text/csv'});let u=URL.createObjectURL(b);let a=document.createElement('a');a.href=u;a.download=`Haven_Payroll_Bank_Mpesa_${new Date().toISOString().slice(0,10)}.csv`;a.click()}
+function runPayroll(){let t=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);if(!t)return alert('Ongeza wafanyakazi');let banks=emps.filter(e=>e.payMethod=='Bank').length;let mps=emps.filter(e=>e.payMethod=='M-Pesa').length;alert(`✅ PAYROLL SIMULATION SUCCESS!\n\nWafanyakazi: ${emps.length}\nBank: ${banks} | M-Pesa: ${mps}\nJumla: TZS ${t.toLocaleString()}\n\nHii ni DEMO - Hakuna pesa iliyotoka kweli!\nImeandaliwa kwa NMB Bulk File.`)}
 render();
 </script>
 </body></html>
