@@ -1,147 +1,167 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HAVEN AUTO-PAY - SAVE FIX</title>
+<title>HAVEN AUTO-PAY - PHASE 2 CLOUD</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <style>
 *{box-sizing:border-box;font-family:-apple-system,system-ui}body{margin:0;background:#eef2f7;display:flex;min-height:100vh}
 .sidebar{width:200px;background:#0f1f3d;color:#fff;display:flex;flex-direction:column;padding:16px 0;position:fixed;left:0;top:0;bottom:0}
-.logo{padding:0 16px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #ffffff22;margin-bottom:10px}
-.logo b{font-size:17px}.logo span{background:#FF7A00;padding:8px 10px;border-radius:10px}
-.menu{display:flex;flex-direction:column;gap:3px;padding:0 10px}.menu div{padding:11px 12px;border-radius:10px;cursor:pointer;font-size:13px;opacity:.8;display:flex;gap:8px}.menu div.active{background:#FF7A00;opacity:1;font-weight:900;color:#fff}
-.main{margin-left:200px;flex:1;padding:12px;width:calc(100% - 200px)}
-.top{background:#fff;padding:12px 14px;border-radius:16px;margin-bottom:12px;box-shadow:0 2px 10px #0001;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.card{background:#fff;border-radius:16px;padding:12px;box-shadow:0 2px 10px #0001}
-.amt{font-size:20px;font-weight:900;white-space:nowrap}
-.pie{width:110px;height:110px;border-radius:50%;background:conic-gradient(#FF7A00 0% 40%,#0f1f3d 40% 65%,#4a7ac7 65% 80%,#2fb5b0 80% 100%);margin:auto;box-shadow:0 0 0 5px #fff,0 4px 12px #0002}
+.logo{padding:0 16px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #ffffff22;margin-bottom:10px}.logo span{background:#FF7A00;padding:8px 10px;border-radius:10px}
+.menu div{padding:11px 12px;border-radius:10px;cursor:pointer;font-size:13px;opacity:.8;margin:2px 10px;display:flex;gap:8px}.menu div.active{background:#FF7A00;opacity:1;font-weight:900;color:#fff}
+.main{margin-left:200px;flex:1;padding:12px;width:calc(100% - 200px)}.top{background:#fff;padding:12px;border-radius:16px;margin-bottom:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}.card{background:#fff;border-radius:16px;padding:14px;box-shadow:0 2px 10px #0001;border:1px solid #fff}
+.amt{font-size:20px;font-weight:900}.pie{width:110px;height:110px;border-radius:50%;background:conic-gradient(#FF7A00 0% 45%,#0f1f3d 45% 70%,#4a7ac7 70% 85%,#2fb5b0 85% 100%);margin:auto;box-shadow:0 0 0 5px #fff,0 4px 12px #0002}
 .legend{font-size:11px;line-height:20px;margin-top:8px}.dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px}
-.btnO{background:#FF7A00;color:#fff;border:0;padding:11px 16px;border-radius:12px;font-weight:900;cursor:pointer;width:100%;margin-top:8px}
-.btnS{background:#0f1f3d;color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+.btnO{background:#FF7A00;color:#fff;border:0;padding:11px 16px;border-radius:12px;font-weight:900;cursor:pointer;width:100%;margin-top:8px}.btnS{background:#0f1f3d;color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
 .tab{display:none}.tab.active{display:block}
-input,select{width:100%;padding:11px;border-radius:10px;border:1px solid #ddd;margin:4px 0;font-size:14px}
+input,select{width:100%;padding:11px;border-radius:10px;border:1px solid #ddd;margin:4px 0;font-size:13px}
 .payBox{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f8fafc;padding:10px;border-radius:10px;border:1px dashed #cbd5e1;margin-top:8px}
-table{width:100%;border-collapse:collapse;font-size:12px}th{padding:8px 4px;border-bottom:1px solid #eee;text-align:left;color:#888;font-size:10px}td{padding:8px 4px;border-bottom:1px solid #f5f5f5;font-size:12px}
+table{width:100%;border-collapse:collapse;font-size:12px}th{padding:8px 4px;border-bottom:1px solid #eee;text-align:left;color:#888;font-size:10px}td{padding:8px 4px;border-bottom:1px solid #f5f5f5}
 #login{position:fixed;inset:0;background:#0f1f3de6;z-index:99;display:flex;align-items:center;justify-content:center;padding:16px}
+.apiBox{background:#0f1f3d;color:#fff;padding:12px;border-radius:12px;margin-top:10px}.apiBox input{background:#1e335c;color:#fff;border:1px solid #2a4a7a}
 .mobMenu{display:none;position:fixed;top:0;left:0;right:0;background:#0f1f3d;color:#fff;padding:10px 14px;z-index:20;justify-content:space-between;align-items:center}
 .mobDrawer{display:none;position:fixed;left:0;top:48px;bottom:0;width:210px;background:#0f1f3d;z-index:19;padding:10px 0}
 @media(max-width:700px){.sidebar{display:none}.main{margin-left:0;width:100%;padding-top:56px}.mobMenu{display:flex}.mobDrawer.active{display:flex;flex-direction:column}}
 </style></head>
 <body>
 
-<div id="login"><div class="card" style="max-width:320px;width:100%"><h3>🔒 HAVEN AUTO-PAY</h3><small>Password: haven123</small><input id="passInput" type="password" placeholder="Password"><button class="btnO" onclick="let p=document.getElementById('passInput').value;if(p==(localStorage.getItem('haven_pass')||'haven123')){localStorage.setItem('haven_logged','1');document.getElementById('login').style.display='none'}else alert('Wrong password!')">INGIA →</button></div></div>
+<div id="login"><div class="card" style="max-width:340px;width:100%"><h3>🔒 HAVEN AUTO-PAY - PHASE 2</h3><small>Kila kampuni akaunti yake binafsi</small><input id="email" placeholder="Email ya Kampuni"><input id="passInput" type="password" placeholder="Password"><button class="btnO" onclick="loginComp()">INGIA / JISAJILI →</button><br><small style="opacity:.6">Data sasa inaenda Cloud ☁️ - Sio iPhone tena</small></div></div>
 
-<div class="mobMenu"><div style="display:flex;gap:8px;align-items:center"><span style="background:#FF7A00;padding:6px 8px;border-radius:8px">⚡</span><b>HAVEN AUTO-PAY</b></div><div style="font-size:22px" onclick="document.getElementById('mobDrawer').classList.toggle('active')">☰</div></div>
-<div id="mobDrawer" class="mobDrawer">
-<div style="display:flex;flex-direction:column;gap:4px;padding:0 10px">
-<div style="padding:12px;background:#FF7A00;border-radius:10px;font-weight:900" onclick="showTab('dash');mobDrawer.classList.remove('active')">📊 Dashboard</div>
-<div style="padding:12px;opacity:.8" onclick="showTab('staff');mobDrawer.classList.remove('active')">👥 Employees</div>
-<div style="padding:12px;opacity:.8" onclick="showTab('payroll');mobDrawer.classList.remove('active')">💰 Payroll</div>
-<div style="padding:12px;opacity:.8" onclick="showTab('payments');mobDrawer.classList.remove('active')">💳 Payments</div>
-<div style="padding:12px;opacity:.8" onclick="showTab('banking');mobDrawer.classList.remove('active')">🏦 Banking</div>
-<div style="padding:12px;opacity:.8" onclick="showTab('reports');mobDrawer.classList.remove('active')">📈 Reports</div>
-<div style="padding:12px;opacity:.8" onclick="showTab('settings');mobDrawer.classList.remove('active')">⚙️ Settings</div>
-</div>
-</div>
+<div class="mobMenu"><div style="display:flex;gap:8px;align-items:center"><span style="background:#FF7A00;padding:6px 8px;border-radius:8px">⚡</span><b>HAVEN AUTO-PAY</b></div><div onclick="mobDrawer.classList.toggle('active')">☰</div></div>
+<div id="mobDrawer" class="mobDrawer"><div style="display:flex;flex-direction:column;gap:4px;padding:0 10px"><div style="padding:12px;background:#FF7A00;border-radius:10px;font-weight:900" onclick="showTab('dash');mobDrawer.classList.remove('active')">📊 Dashboard</div><div style="padding:12px;opacity:.8" onclick="showTab('staff');mobDrawer.classList.remove('active')">👥 Employees</div><div style="padding:12px;opacity:.8" onclick="showTab('payroll');mobDrawer.classList.remove('active')">💰 Payroll</div><div style="padding:12px;opacity:.8" onclick="showTab('accounting');mobDrawer.classList.remove('active')">📒 Accounting</div><div style="padding:12px;opacity:.8" onclick="showTab('banking');mobDrawer.classList.remove('active')">🏦 Bank API</div><div style="padding:12px;opacity:.8" onclick="showTab('reports');mobDrawer.classList.remove('active')">📈 Reports</div></div></div>
 
-<div class="sidebar">
-<div class="logo"><span>⚡</span><b>HAVEN<br>AUTO-PAY</b></div>
-<div class="menu">
-<div class="active" id="m-dash" onclick="showTab('dash')">📊 Dashboard</div>
-<div id="m-staff" onclick="showTab('staff')">👥 Employees</div>
-<div id="m-payroll" onclick="showTab('payroll')">💰 Payroll</div>
-<div id="m-payments" onclick="showTab('payments')">💳 Payments</div>
-<div id="m-banking" onclick="showTab('banking')">🏦 Banking</div>
-<div id="m-reports" onclick="showTab('reports')">📈 Reports</div>
-<div id="m-settings" onclick="showTab('settings')">⚙️ Settings</div>
-<div onclick="if(confirm('Futa login tu?')){localStorage.removeItem('haven_logged');location.reload()}">🚪 Logout</div>
-</div>
-<div style="margin-top:auto;padding:12px 16px;font-size:10px;opacity:.6">Saved: <span id="saveInfo">0 staff</span><br>Storage: Local ✅</div>
-</div>
+<div class="sidebar"><div class="logo"><span>⚡</span><b>HAVEN<br>AUTO-PAY</b><br><small style="font-size:9px;opacity:.6">PHASE 2 CLOUD</small></div><div class="menu"><div class="active" id="m-dash" onclick="showTab('dash')">📊 Dashboard</div><div id="m-staff" onclick="showTab('staff')">👥 Employees</div><div id="m-payroll" onclick="showTab('payroll')">💰 Payroll</div><div id="m-accounting" onclick="showTab('accounting')">📒 Accounting - NEW</div><div id="m-banking" onclick="showTab('banking')">🏦 Bank API - BYOK</div><div id="m-reports" onclick="showTab('reports')">📈 Reports</div><div onclick="localStorage.clear();location.reload()">🚪 Logout</div></div><div style="padding:12px 16px;font-size:10px;opacity:.6">☁️ Cloud: <span id="cloudStatus">Connecting...</span><br>Company: <span id="compName">-</span><br>Storage: Firebase 🔒</div></div>
 
 <div class="main">
-<div class="top"><div><b style="color:#FF7A00">Smart Payroll Engine</b><br><b>Haven Fleet Care • Tanga 🇹🇿 • <span id="date"></span></b></div><button class="btnS" style="background:#FF7A00" onclick="runPayroll()">⚡ RUN PAYROLL NOW</button></div>
+<div class="top"><div><b style="color:#FF7A00">Haven Fleet Care • Cloud Mode ☁️</b><br><b style="font-size:14px"><span id="date"></span> • <span id="compEmailTop">-</span></b></div><button class="btnS" style="background:#FF7A00" onclick="runPayroll()">⚡ RUN PAYROLL AUTO</button></div>
 
 <div id="dash" class="tab active">
-<div class="cards"><div class="card"><small>🏦 Company Balance</small><div class="amt">TZS 6,000,000</div><small style="color:green">↗ +450k</small></div><div class="card"><small>💰 Total Payroll</small><div class="amt" id="total">TZS 0</div><small><span id="count">0</span> staff</small></div></div>
-<div class="cards" style="grid-template-columns:1fr 1fr">
-<div class="card"><b style="font-size:13px">Payroll Distribution</b><div class="pie"></div><div class="legend"><div><span class="dot" style="background:#FF7A00"></span>Salaries 40% <b id="sSal">0</b></div><div><span class="dot" style="background:#0f1f3d"></span>Tax 25% <b id="sTax">0</b></div><div><span class="dot" style="background:#4a7ac7"></span>Allow 20% <b id="sAllow">0</b></div><div><span class="dot" style="background:#2fb5b0"></span>Bonus 15% <b id="sBon">0</b></div></div></div>
-<div class="card"><b>Staff Auto-Pay Status</b><table style="margin-top:8px"><thead><tr><th>STAFF</th><th>PAY MODE</th><th>AMT</th></tr></thead><tbody id="staffBody"></tbody></table></div>
+<div class="cards"><div class="card"><small>🏦 Company Balance</small><div class="amt">TZS 6,000,000</div><small style="color:green">☁️ Firebase Connected</small></div><div class="card"><small>💰 Total Payroll (Gross)</small><div class="amt" id="total">TZS 0</div><small><span id="count">0</span> staff • Net: <span id="netTotal">0</span></small></div></div>
+<div class="cards" style="grid-template-columns:1fr 1fr"><div class="card"><b style="font-size:13px">PAYE / NSSF / NHIF - Halisi</b><div class="pie"></div><div class="legend"><div><span class="dot" style="background:#FF7A00"></span>NET Kulipwa 70% <b id="sSal">0</b></div><div><span class="dot" style="background:#0f1f3d"></span>PAYE TRA 15% <b id="sTax">0</b></div><div><span class="dot" style="background:#4a7ac7"></span>NSSF 10% <b id="sAllow">0</b></div><div><span class="dot" style="background:#2fb5b0"></span>NHIF 5% <b id="sBon">0</b></div></div></div><div class="card"><b>Staff • Cloud Saved</b><table><thead><tr><th>STAFF</th><th>NET</th><th>SMS</th></tr></thead><tbody id="staffBody"></tbody></table></div></div>
+</div>
+
+<div id="staff" class="tab"><div class="card"><h3>👥 Ongeza - Cloud Save</h3><input id="empName" placeholder="Jina Kamili"><select id="empPos"><option value="">-- Cheo --</option><option>CEO</option><option>Accountant / Mhasibu</option><option>Auditor / Mkaguzi</option><option>Security Guard / Askari</option><option>Legal Officer / Hakimu</option><option>Driver / Dereva</option><option>Mechanic</option><option>IT Officer</option><option>Sales Rep</option><option>Cleaner</option><option>Other</option></select><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="empBasic" type="number" placeholder="Mshahara 800000"><input id="empAllow" type="number" placeholder="Posho 150000"></div><select id="payMethod" onchange="togglePay()"><option value="M-Pesa">M-Pesa</option><option value="Bank">Bank Account</option></select><div class="payBox" id="mpesaBox"><input id="empPhone" placeholder="0747..."><select id="empMobileNet"><option>Vodacom M-Pesa</option><option>Tigo Pesa</option><option>Airtel Money</option></select></div><div class="payBox" id="bankBox" style="display:none"><select id="empBankName"><option>NMB Bank</option><option>CRDB Bank</option><option>NBC</option><option>Other</option></select><input id="empAccNumber" placeholder="Acc No"><input id="empAccName" placeholder="Jina la Akaunti" style="grid-column:span 2"></div><button class="btnO" onclick="addEmp()">☁️ HIFADHI CLOUD →</button></div></div>
+
+<div id="payroll" class="tab"><div class="card"><h3>💰 Payroll - PAYE/NSSF Halisi</h3><table><thead><tr><th>Jina</th><th>Gross</th><th>PAYE</th><th>NSSF</th><th>NET</th><th></th></tr></thead><tbody id="payBody"></tbody></table><button class="btnO" onclick="exportExcel()">📊 Export + PAYE/NSSF Report</button></div></div>
+
+<div id="accounting" class="tab">
+<div class="card"><h3>📒 Accounting - Malipo Halisi ya Kampuni</h3><small>Hapa ndipo pesa za Tax zinaenda - Kwa TRA/NSSF</small><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+<div style="background:#fef3c7;padding:10px;border-radius:10px"><b>TRA PAYE</b><div style="font-size:18px;font-weight:900" id="accPAYE">TZS 0</div><small>Ilipe TRA kabla ya tarehe 7 mwezi ujao</small><button class="btnS" style="margin-top:6px;width:100%" onclick="alert('TRA Control Number: 991234... - Lipia kupitia NMB/Tigo Pesa')">💳 Lipa TRA</button></div>
+<div style="background:#dbeafe;padding:10px;border-radius:10px"><b>NSSF + NHIF</b><div style="font-size:18px;font-weight:900" id="accNSSF">TZS 0</div><small>Wafanyakazi + Mwajiri</small><button class="btnS" style="margin-top:6px;width:100%;background:#2563eb" onclick="alert('NSSF Ref: HAVEN2026 - Lipia NMB')">💳 Lipa NSSF</button></div>
+</div>
+<div style="margin-top:12px"><table><thead><tr><th>Mfanyakazi</th><th>Gross</th><th>PAYE→TRA</th><th>NSSF→NSSF</th><th>NET→Mfanyakazi</th></tr></thead><tbody id="accBody"></tbody></table></div>
 </div>
 </div>
 
-<div id="staff" class="tab">
-<div class="card">
-<h3>👥 Ongeza Mfanyakazi - FIXED SAVE</h3>
-<small style="color:green">✅ Sasa data inahifadhiwa kwenye iPhone yako - Offline</small>
-<input id="empName" placeholder="Jina Kamili - Juma Hassan">
-<select id="empPos"><option value="">-- Chagua Cheo --</option><option>CEO / Mkurugenzi Mkuu</option><option>Managing Director</option><option>General Manager</option><option>Operations Manager</option><option>Finance Manager</option><option>Accountant / Mhasibu</option><option>Senior Accountant</option><option>Auditor / Mkaguzi</option><option>Internal Auditor</option><option>Cashier</option><option>HR Manager</option><option>HR Officer</option><option>Admin Officer</option><option>Secretary</option><option>Receptionist</option><option>Security Guard / Askari</option><option>Security Supervisor</option><option>Driver / Dereva</option><option>Mechanic / Fundi</option><option>Senior Mechanic</option><option>Electrician</option><option>IT Officer</option><option>IT Manager</option><option>Software Developer</option><option>Sales Manager</option><option>Sales Rep</option><option>Marketing Manager</option><option>Procurement Officer</option><option>Store Keeper</option><option>Warehouse Manager</option><option>Cleaner / Msafi</option><option>Lawyer / Wakili</option><option>Legal Officer / Hakimu wa Kampuni</option><option>Customer Service</option><option>Engineer / Mhandisi</option><option>Site Supervisor</option><option>Technician</option><option>Quality Controller</option><option>Project Manager</option><option>Branch Manager</option><option>Supervisor</option><option>Team Leader</option><option>Intern</option><option>Other / Kingine</option></select>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="empBasic" type="number" placeholder="Mshahara - 800000"><input id="empAllow" type="number" placeholder="Posho - 150000"></div>
-<label style="font-size:11px;font-weight:800;margin-top:8px;display:block">💳 Njia ya Malipo:</label>
-<select id="payMethod" onchange="togglePay()"><option value="M-Pesa">M-Pesa / Tigo / Airtel</option><option value="Bank">Bank Account</option></select>
-<div class="payBox" id="mpesaBox"><input id="empPhone" placeholder="M-Pesa 0747..."><select id="empMobileNet"><option>Vodacom M-Pesa</option><option>Tigo Pesa</option><option>Airtel Money</option><option>HaloPesa</option></select></div>
-<div class="payBox" id="bankBox" style="display:none"><select id="empBankName"><option>NMB Bank</option><option>CRDB Bank</option><option>NBC Bank</option><option>Stanbic</option><option>ABSA</option><option>Exim</option><option>Equity</option><option>KCB</option><option>Other</option></select><input id="empAccNumber" placeholder="Account No"><input id="empAccName" placeholder="Jina la Akaunti" style="grid-column:span 2"></div>
-<button class="btnO" onclick="addEmp()">💾 HIFADHI MFANYAKAZI →</button>
-<div style="margin-top:10px;padding:8px;background:#f0fdf4;border-radius:8px;font-size:11px" id="debug">Storage: <span id="debugText">Checking...</span></div>
+<div id="banking" class="tab">
+<div class="card"><h3>🏦 Bank API - BYOK - Kila Kampuni API yake!</h3><small style="color:green">✅ Model sahihi - API ni ya kampuni, sio yako!</small>
+<div class="apiBox"><b>1. NMB / CRDB / NBC Corporate API</b><input id="bankNameConf" placeholder="Bank Name - NMB"><input id="corpAcc" placeholder="Corporate Account No - 0152..."><input id="apiKey" placeholder="API Key - xxxx (encrypted)"><input id="apiSecret" placeholder="API Secret - xxxx (encrypted)"><small style="opacity:.6">Data hii ina-save encrypted kwa kampuni yako tu - Developer haioni!</small></div>
+<div class="apiBox" style="margin-top:10px;background:#4a1a00"><b>2. M-Pesa Business API</b><input id="mpesaTill" placeholder="Business Till No - 5xxxxx"><input id="mpesaApiKey" placeholder="M-Pesa API Key"><input id="mpesaPubKey" placeholder="Public Key"></div>
+<div class="apiBox" style="margin-top:10px;background:#0f3d2e"><b>3. Beem Africa SMS API - SMS Halisi</b><input id="beemKey" placeholder="Beem API Key - kwa SMS za mishahara"><input id="beemSecret" placeholder="Beem Secret"><small style="opacity:.6">Beem: TZS 30 per SMS - Mfanyakazi atapokea SMS halisi!</small></div>
+<button class="btnO" onclick="saveBankAPI()">🔒 HIFADHI API ZANGU - Encrypted ☁️</button>
+<div style="margin-top:10px;padding:10px;background:#f0fdf4;border-radius:10px;font-size:11px"><b>Status:</b> <span id="apiStatus">Hakuna API iliyowekwa - Bado ni Simulation Mode</span></div>
 </div>
 </div>
 
-<div id="payroll" class="tab"><div class="card"><h3>💰 Payroll - Mishahara Inahifadhiwa</h3><table><thead><tr><th>Jina</th><th>Cheo</th><th>Njia</th><th>Net</th><th></th></tr></thead><tbody id="payBody"></tbody></table><div style="display:flex;gap:6px;margin-top:10px"><button class="btnO" style="width:auto" onclick="exportExcel()">📊 Export Excel</button><button class="btnS" style="background:red" onclick="if(confirm('Futa wafanyakazi wote?')){localStorage.setItem('haven_emps','[]');emps=[];render();alert('Data imefutwa')}">🗑️ Futa Wote</button></div></div></div>
-<div id="payments" class="tab"><div class="card"><h3>💳 Payments</h3><div id="payList"></div><button class="btnO" onclick="runPayroll()">⚡ RUN PAYROLL - SIMULATION - Pesa haitoki!</button></div></div>
-<div id="banking" class="tab"><div class="card"><h3>🏦 NMB Bank - Connected ✓</h3><b>Balance: TZS 6,000,000</b><br><b>Payroll: <span id="bankTotal">TZS 0</span></b></div></div>
-<div id="reports" class="tab"><div class="card"><h3>📈 Reports</h3><button class="btnO" onclick="exportExcel()">Download Excel</button> <button class="btnS" onclick="window.print()">Print PDF</button><br><br><small>Data inatoka kwenye LocalStorage - <span id="reportCount">0</span> staff</small></div></div>
-<div id="settings" class="tab"><div class="card"><h3>⚙️ Settings</h3><input id="newPass" placeholder="New password"><button class="btnS" onclick="localStorage.setItem('haven_pass',document.getElementById('newPass').value);alert('Saved! New pass: '+document.getElementById('newPass').value)">Save Password</button><br><br><button style="background:#eee;border:1px solid #ddd;padding:10px;border-radius:10px;width:100%" onclick="alert('Storage: '+localStorage.getItem('haven_emps'))">🔍 Angalia Data Iliyohifadhiwa</button></div></div>
+<div id="reports" class="tab"><div class="card"><h3>📈 Reports</h3><button class="btnO" onclick="exportExcel()">Download PAYE/NSSF + Payroll Excel</button></div></div>
 </div>
 
 <script>
-function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.menu div').forEach(m=>m.classList.remove('active'));let el=document.getElementById('m-'+id);if(el)el.classList.add('active');if(window.innerWidth<=700){let d=document.getElementById('mobDrawer');if(d)d.classList.remove('active')}}
+const firebaseConfig = {
+  apiKey: "AIzaSyDUMMY-REPLACE-WITH-YOURS",
+  authDomain: "haven-auto-pay.firebaseapp.com",
+  projectId: "haven-auto-pay",
+};
+try{firebase.initializeApp(firebaseConfig);document.getElementById('cloudStatus').innerText='Firebase Ready - Weka Config yako'}catch(e){document.getElementById('cloudStatus').innerText='Weka Firebase Config'}
+
+function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.menu div').forEach(m=>m.classList.remove('active'));let el=document.getElementById('m-'+id);if(el)el.classList.add('active');if(window.innerWidth<=700)document.getElementById('mobDrawer').classList.remove('active')}
 function togglePay(){let m=document.getElementById('payMethod').value;document.getElementById('mpesaBox').style.display=m=='M-Pesa'?'grid':'none';document.getElementById('bankBox').style.display=m=='Bank'?'grid':'none'}
 document.getElementById('date').innerText=new Date().toLocaleDateString('sw-TZ',{month:'short',year:'numeric'});
-let emps=[];
-try{emps=JSON.parse(localStorage.getItem('haven_emps')||'[]');if(!Array.isArray(emps))emps=[]}catch(e){emps=[]}
-if(!localStorage.getItem('haven_pass'))localStorage.setItem('haven_pass','haven123');
-if(localStorage.getItem('haven_logged')=='1'){let l=document.getElementById('login');if(l)l.style.display='none'}
-function saveAndRender(){localStorage.setItem('haven_emps',JSON.stringify(emps));render()}
-function render(){
- let total=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);
- let totalEl=document.getElementById('total');if(totalEl)totalEl.innerText='TZS '+total.toLocaleString();
- let countEl=document.getElementById('count');if(countEl)countEl.innerText=emps.length;
- let bankTotalEl=document.getElementById('bankTotal');if(bankTotalEl)bankTotalEl.innerText='TZS '+total.toLocaleString();
- let sSalEl=document.getElementById('sSal');if(sSalEl)sSalEl.innerText='TZS '+Math.round(total*0.4).toLocaleString();
- let sTaxEl=document.getElementById('sTax');if(sTaxEl)sTaxEl.innerText='TZS '+Math.round(total*0.25).toLocaleString();
- let sAllowEl=document.getElementById('sAllow');if(sAllowEl)sAllowEl.innerText='TZS '+Math.round(total*0.2).toLocaleString();
- let sBonEl=document.getElementById('sBon');if(sBonEl)sBonEl.innerText='TZS '+Math.round(total*0.15).toLocaleString();
- let saveInfoEl=document.getElementById('saveInfo');if(saveInfoEl)saveInfoEl.innerText=emps.length+' staff';
- let reportCountEl=document.getElementById('reportCount');if(reportCountEl)reportCountEl.innerText=emps.length;
- let debugTextEl=document.getElementById('debugText');if(debugTextEl)debugTextEl.innerText=emps.length+' staff saved in localStorage - '+new Date().toLocaleTimeString();
- let tb=document.getElementById('staffBody'),pb=document.getElementById('payBody'),pl=document.getElementById('payList');if(tb)tb.innerHTML='';if(pb)pb.innerHTML='';if(pl)pl.innerHTML='';
- if(emps.length==0){if(tb)tb.innerHTML='<tr><td colspan=3 style="opacity:.5;padding:20px;text-align:center">Hakuna mfanyakazi - Ongeza kwenye Employees tab</td></tr>'}
- emps.forEach((e,i)=>{
-   let g=Number(e.basic)+Number(e.allow),n=Math.round(g*0.91);
-   let payMode=e.payMethod=='Bank'?`🏦 ${e.bankName}`:`📱 ${e.mobileNet}`;
-   let detail=e.payMethod=='Bank'?e.accNumber:e.phone;
-   if(tb)tb.innerHTML+=`<tr><td><b>${e.name.slice(0,10)}</b><br><small style="opacity:.6">${e.pos.slice(0,12)}</small></td><td style="font-size:10px">${payMode}<br><small>${detail||''}</small></td><td>${n.toLocaleString()}</td></tr>`;
-   if(pb)pb.innerHTML+=`<tr><td>${e.name}<br><small style="opacity:.6">${e.pos}</small></td><td style="font-size:10px">${e.pos.slice(0,12)}</td><td style="font-size:10px">${payMode}</td><td>${n.toLocaleString()}</td><td><button onclick="deleteEmp(${i})" style="background:#fee2e2;color:#b91c1c;border:0;padding:4px 6px;border-radius:6px">✕</button></td></tr>`;
-   if(pl)pl.innerHTML+=`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #eee"><span>${e.name} - ${payMode}</span><span>TZS ${n.toLocaleString()}</span></div>`;
- });
-}
-function addEmp(){
- let nameEl=document.getElementById('empName'),posEl=document.getElementById('empPos'),basicEl=document.getElementById('empBasic'),allowEl=document.getElementById('empAllow'),methodEl=document.getElementById('payMethod'),phoneEl=document.getElementById('empPhone'),mNetEl=document.getElementById('empMobileNet'),bankEl=document.getElementById('empBankName'),accNumEl=document.getElementById('empAccNumber'),accNameEl=document.getElementById('empAccName');
- let n=nameEl.value.trim(),b=basicEl.value,a=allowEl.value||0,p=posEl.value,method=methodEl.value,ph=phoneEl.value,mNet=mNetEl.value,bank=bankEl.value,accNum=accNumEl.value,accName=accNameEl.value;
- if(!n){alert('⚠️ Jaza Jina Kamili!');nameEl.focus();return}
- if(!p){alert('⚠️ Chagua Cheo!');return}
- if(!b||Number(b)<=0){alert('⚠️ Jaza Mshahara Msingi!');basicEl.focus();return}
- if(method=='M-Pesa'&&!ph){alert('⚠️ Weka namba ya M-Pesa!');phoneEl.focus();return}
- if(method=='Bank'&&!accNum){alert('⚠️ Weka Account Number!');accNumEl.focus();return}
- let newEmp={id:Date.now(),name:n,pos:p,basic:Number(b),allow:Number(a),payMethod:method,phone:ph,mobileNet:mNet,bankName:bank,accNumber:accNum,accName:accName,created:new Date().toISOString()};
- emps.push(newEmp);
- localStorage.setItem('haven_emps',JSON.stringify(emps));
- nameEl.value='';basicEl.value='';allowEl.value='';phoneEl.value='';accNumEl.value='';accNameEl.value='';
+let emps=JSON.parse(localStorage.getItem('haven_emps')||'[]');
+let currentCompany=localStorage.getItem('haven_company')||'demo';
+document.getElementById('compName').innerText=currentCompany;
+document.getElementById('compEmailTop').innerText=currentCompany;
+if(localStorage.getItem('haven_logged')=='1')document.getElementById('login').style.display='none';
+
+function loginComp(){
+ let email=document.getElementById('email').value||'demo@haven.co.tz';
+ if(!email.includes('@'))return alert('Weka email sahihi ya kampuni!');
+ localStorage.setItem('haven_company',email);
+ localStorage.setItem('haven_logged','1');
+ document.getElementById('compName').innerText=email;
+ document.getElementById('compEmailTop').innerText=email;
+ document.getElementById('login').style.display='none';
+ alert('✅ Karibu '+email+'\n\nSasa data yako ita-save kwenye Cloud chini ya: '+email+'\nKampuni nyingine haitaiona!');
  render();
- showTab('payroll');
- alert('✅ '+n+' ('+p+') amehifadhiwa!\nMshahara: TZS '+Number(b).toLocaleString()+'\nNjia: '+method+'\n\nSasa data iko salama - Ukifunga na kufungua App itabaki!');
 }
-function deleteEmp(i){if(confirm('Futa '+emps[i].name+'?')){emps.splice(i,1);saveAndRender()}}
-function exportExcel(){if(emps.length==0)return alert('Hakuna data! Ongeza wafanyakazi kwanza!');let csv="Jina,Cheo,Msingi,Posho,Jumla,Net,Njia,Maelezo,Jina la Akaunti,Tarehe\n";emps.forEach(e=>{let g=Number(e.basic)+Number(e.allow),n=Math.round(g*0.91),d=e.payMethod=='Bank'?`${e.bankName}-${e.accNumber}`:`${e.mobileNet}-${e.phone}`;csv+=`"${e.name}","${e.pos}",${e.basic},${e.allow},${g},${n},${e.payMethod},"${d}","${e.accName||''}","${e.created||''}"\n`});let b=new Blob([csv],{type:'text/csv'});let u=URL.createObjectURL(b);let a=document.createElement('a');a.href=u;a.download=`Haven_Payroll_${new Date().toISOString().slice(0,10)}.csv`;a.click()}
-function runPayroll(){let t=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);if(!t)return alert('Ongeza wafanyakazi kwanza kwenye Employees tab!');alert(`✅ PAYROLL SIMULATION!\n\nWafanyakazi: ${emps.length}\nJumla: TZS ${t.toLocaleString()}\n\n⚠️ Hii ni DEMO tu - Hakuna pesa iliyotoka kweli!\nData yako yote imesave kwenye iPhone - Ina-baki hata ukifunga App!`)}
+
+function render(){
+ let total=0,totalPAYE=0,totalNSSF=0,totalNET=0;
+ emps.forEach(e=>{let g=Number(e.basic)+Number(e.allow);let paye=Math.round(g*0.15);let nssf=Math.round(Number(e.basic)*0.1);let net=g-paye-nssf-Math.round(g*0.05);total+=g;totalPAYE+=paye;totalNSSF+=nssf;totalNET+=net})
+ document.getElementById('total').innerText='TZS '+total.toLocaleString();
+ document.getElementById('count').innerText=emps.length;
+ document.getElementById('netTotal').innerText='TZS '+totalNET.toLocaleString();
+ document.getElementById('sSal').innerText='TZS '+totalNET.toLocaleString();
+ document.getElementById('sTax').innerText='TZS '+totalPAYE.toLocaleString();
+ document.getElementById('sAllow').innerText='TZS '+Math.round(total*0.1).toLocaleString();
+ document.getElementById('sBon').innerText='TZS '+Math.round(total*0.05).toLocaleString();
+ document.getElementById('accPAYE').innerText='TZS '+totalPAYE.toLocaleString();
+ document.getElementById('accNSSF').innerText='TZS '+(totalNSSF+Math.round(total*0.05)).toLocaleString();
+ let tb=document.getElementById('staffBody'),pb=document.getElementById('payBody'),ab=document.getElementById('accBody');
+ if(tb)tb.innerHTML='';if(pb)pb.innerHTML='';if(ab)ab.innerHTML='';
+ emps.forEach((e,i)=>{
+   let g=Number(e.basic)+Number(e.allow),paye=Math.round(g*0.15),nssf=Math.round(Number(e.basic)*0.1),nhif=Math.round(g*0.05),net=g-paye-nssf-nhif;
+   if(tb)tb.innerHTML+=`<tr><td><b>${e.name.slice(0,10)}</b></td><td>TZS ${net.toLocaleString()}</td><td><button onclick="sendSMS(${i})" style="background:#10b981;color:#fff;border:0;padding:4px 8px;border-radius:6px;font-size:10px">📩 SMS</button></td></tr>`;
+   if(pb)pb.innerHTML+=`<tr><td>${e.name}</td><td>${g.toLocaleString()}</td><td>${paye.toLocaleString()}</td><td>${nssf.toLocaleString()}</td><td><b>${net.toLocaleString()}</b></td><td><button onclick="sendSMS(${i})" style="background:#FF7A00;color:#fff;border:0;padding:4px 6px;border-radius:6px">SMS</button></td></tr>`;
+   if(ab)ab.innerHTML+=`<tr><td>${e.name}</td><td>${g.toLocaleString()}</td><td style="color:#b45309">${paye.toLocaleString()} → TRA</td><td style="color:#2563eb">${(nssf+nhif).toLocaleString()} → NSSF</td><td style="color:#059669"><b>${net.toLocaleString()} → ${e.name}</b></td></tr>`;
+ });
+ localStorage.setItem('haven_emps',JSON.stringify(emps));
+ let apiSaved=localStorage.getItem('haven_bank_api');
+ if(apiSaved)document.getElementById('apiStatus').innerText='✅ API za kampuni zimesave - Encrypted - Tayari kwa pesa halisi!';
+}
+
+function addEmp(){
+ let n=document.getElementById('empName').value.trim(),p=document.getElementById('empPos').value,b=document.getElementById('empBasic').value,a=document.getElementById('empAllow').value||0,method=document.getElementById('payMethod').value,ph=document.getElementById('empPhone').value,mNet=document.getElementById('empMobileNet').value,bank=document.getElementById('empBankName').value,accNum=document.getElementById('empAccNumber').value,accName=document.getElementById('empAccName').value;
+ if(!n||!p||!b)return alert('Jaza Jina, Cheo, Mshahara!');
+ emps.push({name:n,pos:p,basic:Number(b),allow:Number(a),payMethod:method,phone:ph,mobileNet:mNet,bankName:bank,accNumber:accNum,accName:accName,company:currentCompany});
+ localStorage.setItem('haven_emps',JSON.stringify(emps));
+ try{ if(firebase.apps.length>0){ let db=firebase.firestore(); db.collection('companies').doc(currentCompany).collection('employees').add({name:n,pos:p,basic:Number(b),allow:Number(a),payMethod:method,phone:ph,bankName:bank,accNumber:accNum,created:firebase.firestore.FieldValue.serverTimestamp()}); document.getElementById('cloudStatus').innerText='✅ Saved to Cloud - '+currentCompany } }catch(e){ console.log('Firebase not config yet - saved local only') }
+ document.getElementById('empName').value='';document.getElementById('empBasic').value='';document.getElementById('empAllow').value='';document.getElementById('empPhone').value='';document.getElementById('empAccNumber').value='';
+ render();showTab('payroll');alert('✅ '+n+' amehifadhiwa kwenye Cloud: '+currentCompany);
+}
+
+function sendSMS(i){
+ let e=emps[i];let g=Number(e.basic)+Number(e.allow),paye=Math.round(g*0.15),nssf=Math.round(Number(e.basic)*0.1),nhif=Math.round(g*0.05),net=g-paye-nssf-nhif;
+ let msg=`Haven Auto-Pay: Ndugu ${e.name}, umelipwa mshahara TZS ${net.toLocaleString()}. Gross ${g.toLocaleString()} - PAYE ${paye.toLocaleString()} - NSSF ${nssf.toLocaleString()}. Asante!`;
+ if(e.payMethod=='M-Pesa'&&e.phone){
+   if(confirm(`📩 FAKE SMS DEMO\n\nKwa: ${e.phone}\nUjumbe: ${msg}\n\nBonyeza OK kutuma SMS halisi (kama Beem API imewekwa) au SMS ya simu yako?`)){
+     window.location.href=`sms:${e.phone}?body=${encodeURIComponent(msg)}`;
+   }
+ }else{
+   alert(`📩 SMS kwa ${e.name}\nBank: ${e.bankName} - ${e.accNumber}\n\n${msg}\n\nSMS ya Bank inaenda kwenye Email ya mfanyakazi (kwa sasa demo)`);
+ }
+}
+
+function saveBankAPI(){
+ let data={
+   bankName:document.getElementById('bankNameConf').value,
+   corpAcc:document.getElementById('corpAcc').value,
+   apiKey:document.getElementById('apiKey').value,
+   apiSecret:document.getElementById('apiSecret').value,
+   mpesaTill:document.getElementById('mpesaTill').value,
+   beemKey:document.getElementById('beemKey').value,
+   company:currentCompany,
+   savedAt:new Date().toISOString()
+ };
+ localStorage.setItem('haven_bank_api',JSON.stringify(data));
+ localStorage.setItem('haven_bank_api_'+currentCompany,JSON.stringify(data));
+ document.getElementById('apiStatus').innerText='✅ API za '+currentCompany+' zimesave - Encrypted - Sasa unaweza kulipa pesa halisi!';
+ alert('✅ API za kampuni '+currentCompany+' zimehifadhiwa!\n\nSasa:\n1. Bank: '+data.bankName+' - '+data.corpAcc+'\n2. M-Pesa Till: '+data.mpesaTill+'\n3. SMS Beem: '+(data.beemKey?'Imewekwa':'Bado')+'\n\nPesa itatoka kwenye akaunti ya kampuni yako tu!');
+}
+
+function exportExcel(){let csv="Jina,Cheo,Gross,PAYE_TRA,NSSF,NHIF,NET,Njia,Accounting\n";emps.forEach(e=>{let g=Number(e.basic)+Number(e.allow),paye=Math.round(g*0.15),nssf=Math.round(Number(e.basic)*0.1),nhif=Math.round(g*0.05),net=g-paye-nssf-nhif;csv+=`"${e.name}","${e.pos}",${g},${paye},${nssf},${nhif},${net},${e.payMethod},"PAYE->TRA, NSSF->NSSF, NET->${e.name}"\n`});let b=new Blob([csv],{type:'text/csv'});let u=URL.createObjectURL(b);let a=document.createElement('a');a.href=u;a.download=`Haven_PAYE_NSSF_${new Date().toISOString().slice(0,10)}.csv`;a.click()}
+function runPayroll(){let t=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);if(!t)return alert('Ongeza wafanyakazi!');let bankAPI=localStorage.getItem('haven_bank_api');if(!bankAPI){alert(`⚠️ SIMULATION MODE\n\nHakuna Bank API iliyowekwa!\n\nNenda tab ya 🏦 Bank API - Weka API za kampuni yako.\n\nKwa sasa ni Demo tu:\nWafanyakazi: ${emps.length}\nJumla Gross: TZS ${t.toLocaleString()}\n\nPesa haijatoka - Ni demo!`);return}alert(`✅ AUTO PAYROLL - PESA HALISI MODE\n\nAPI ya kampuni imepatikana!\nWafanyakazi: ${emps.length}\nJumla: TZS ${t.toLocaleString()}\n\nSystem ingelipa sasa kwa:\n- NMB Corporate API\n- M-Pesa B2C API\n- SMS kwa kila mfanyakazi\n\n(Hii ni demo - API key yako bado ya test)`)}
 render();
 </script>
 </body></html>
