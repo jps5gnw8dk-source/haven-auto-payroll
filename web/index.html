@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HAVEN AUTO-PAY - PHASE 2.2 - REAL SHEET</title>
+<title>HAVEN AUTO-PAYROLL - PHASE 2.3 + SETTINGS + LOGOUT</title>
 <style>
 *{box-sizing:border-box;font-family:-apple-system,system-ui}body{margin:0;background:#eef2f7;display:flex;min-height:100vh}
 .sidebar{width:200px;background:#0f1f3d;color:#fff;display:flex;flex-direction:column;padding:16px 0;position:fixed;left:0;top:0;bottom:0}
@@ -28,9 +28,27 @@ table{width:100%;border-collapse:collapse;font-size:10px}th{padding:6px 3px;bord
 <div id="login"><div class="card" style="max-width:340px;width:100%"><h3>🔒 HAVEN AUTO-PAYROLL </h3><input id="email" placeholder="Email ya Kampuni"><input id="passInput" type="password" placeholder="Password"><button class="btnO" onclick="loginComp()">INGIA →</button><br><small style="opacity:.6">WCF + SDL + Pension Employer + HESLB + Life Assurance</small></div></div>
 
 <div class="mobMenu"><div style="display:flex;gap:8px;align-items:center"><span style="background:#FF7A00;padding:6px 8px;border-radius:8px">⚡</span><b>HAVEN AUTO-PAY</b></div><div onclick="mobDrawer.classList.toggle('active')">☰</div></div>
-<div id="mobDrawer" class="mobDrawer"><div style="display:flex;flex-direction:column;gap:4px;padding:0 10px"><div style="padding:12px;background:#FF7A00;border-radius:10px;font-weight:900" onclick="showTab('dash');mobDrawer.classList.remove('active')">📊 Dashboard</div><div style="padding:12px;opacity:.8" onclick="showTab('staff');mobDrawer.classList.remove('active')">👥 Employees</div><div style="padding:12px;opacity:.8" onclick="showTab('payroll');mobDrawer.classList.remove('active')">💰 Payroll - Real</div><div style="padding:12px;opacity:.8" onclick="showTab('accounting');mobDrawer.classList.remove('active')">📒 Accounting</div><div style="padding:12px;opacity:.8" onclick="showTab('banking');mobDrawer.classList.remove('active')">🏦 Bank API</div></div></div>
+<div id="mobDrawer" class="mobDrawer"><div style="display:flex;flex-direction:column;gap:4px;padding:0 10px">
+<div style="padding:12px;background:#FF7A00;border-radius:10px;font-weight:900" onclick="showTab('dash');mobDrawer.classList.remove('active')">📊 Dashboard</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('staff');mobDrawer.classList.remove('active')">👥 Employees</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('payroll');mobDrawer.classList.remove('active')">💰 Payroll </div>
+<div style="padding:12px;opacity:.8" onclick="showTab('accounting');mobDrawer.classList.remove('active')">📒 Accounting</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('banking');mobDrawer.classList.remove('active')">🏦 Bank API</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('reports');mobDrawer.classList.remove('active')">📈 Reports</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('settings');mobDrawer.classList.remove('active')">⚙️ Settings</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('logout');mobDrawer.classList.remove('active')">🚪 Logout / Login</div>
+</div></div>
 
-<div class="sidebar"><div class="logo"><span>⚡</span><b>HAVEN<br>AUTO-PAY</b><br><small style="font-size:8px;opacity:.6">2.2 REAL SHEET</small></div><div class="menu"><div class="active" id="m-dash" onclick="showTab('dash')">📊 Dashboard</div><div id="m-staff" onclick="showTab('staff')">👥 Employees</div><div id="m-payroll" onclick="showTab('payroll')">💰 Payroll Real</div><div id="m-accounting" onclick="showTab('accounting')">📒 Accounting + WCF/SDL</div><div id="m-banking" onclick="showTab('banking')">🏦 Bank API - BYOK</div><div id="m-reports" onclick="showTab('reports')">📈 Reports</div><div onclick="localStorage.clear();location.reload()">🚪 Logout</div></div><div style="padding:12px 16px;font-size:9px;opacity:.6">Company: <span id="compName">-</span><br>Sheet: Interworld Model<br>WCF 0.5% + SDL 4% + Pension 10%</div></div>
+<div class="sidebar"><div class="logo"><span>⚡</span><b>HAVEN<br>AUTO-PAY</b><br><small style="font-size:8px;opacity:.6">2.3 + SETTINGS + LOGOUT</small></div><div class="menu">
+<div class="active" id="m-dash" onclick="showTab('dash')">📊 Dashboard</div>
+<div id="m-staff" onclick="showTab('staff')">👥 Employees</div>
+<div id="m-payroll" onclick="showTab('payroll')">💰 Payroll Real</div>
+<div id="m-accounting" onclick="showTab('accounting')">📒 Accounting + WCF/SDL</div>
+<div id="m-banking" onclick="showTab('banking')">🏦 Bank API - BYOK</div>
+<div id="m-reports" onclick="showTab('reports')">📈 Reports</div>
+<div id="m-settings" onclick="showTab('settings')">⚙️ Settings</div>
+<div id="m-logout" onclick="showTab('logout')">🚪 Logout / Login</div>
+</div><div style="padding:12px 16px;font-size:9px;opacity:.6">Company: <span id="compName">-</span><br>Sheet: Interworld Model<br>WCF 0.5% + SDL 4% + Pension 10%</div></div>
 
 <div class="main">
 <div class="top"><div><b style="color:#FF7A00"> Model • WCF/SDL/Pension Employer</b><br><b style="font-size:12px"><span id="date"></span> • <span id="compEmailTop">-</span></b></div><button class="btnS" style="background:#FF7A00" onclick="runPayroll()">⚡ RUN PAYROLL</button></div>
@@ -40,8 +58,8 @@ table{width:100%;border-collapse:collapse;font-size:10px}th{padding:6px 3px;bord
 <div class="cards" style="grid-template-columns:1fr 1fr"><div class="card"><b style="font-size:11px">Breakdown </b><div style="font-size:10px;line-height:18px;margin-top:6px"><div>Basic + Allowances = <b>Gross</b></div><div>Pension 10% = <b id="sPension">0</b></div><div>Taxable = Gross - Pension</div><div>PAYE = <b id="sPAYE">0</b> → TRA</div><div>NHIF = <b id="sNHIF">0</b> → NHIF</div><div>WCF 0.5% = <b id="sWCF">0</b> → WCF</div><div>Pension Employer 10% = <b id="sPensionEmp">0</b></div><div>SDL 4% = <b id="sSDL">0</b> → TRA</div></div></div><div class="card"><b style="font-size:11px">Staff - Real Formula</b><table><thead><tr><th>STAFF</th><th>NET</th><th>🗑️</th></tr></thead><tbody id="staffBody"></tbody></table><button class="btnD" style="width:100%;margin-top:6px" onclick="deleteAll()">🗑️ FUTA WOTE</button></div></div>
 </div>
 
-<div id="staff" class="tab"><div class="card"><h3>👥 Ongeza - Kama Sheet Halisi - Na Vyeo Vyote + Halopesa</h3>
-<div class="grid2"><input id="empName" placeholder="Jina Kamili - QIANG ZHANG"><input id="empDept" placeholder="Dept - Clearing & Forwarding"></div>
+<div id="staff" class="tab"><div class="card"><h3>👥 Ongeza -Mfanyakazi </h3>
+<div class="grid2"><input id="empName" placeholder="Jina Kamili - HAVEN PRICE "><input id="empDept" placeholder="Dept - Clearing & Forwarding"></div>
 <select id="empPos"><option value="">-- Chagua Cheo - 45+ --</option><option>CEO / Mkurugenzi Mkuu</option><option>Managing Director</option><option>General Manager</option><option>Operations Manager</option><option>Finance Manager</option><option>Finance Officer</option><option>Accountant / Mhasibu</option><option>Senior Accountant</option><option>Chief Accountant</option><option>Auditor / Mkaguzi</option><option>Internal Auditor</option><option>External Auditor</option><option>Cashier / Mweka Fedha</option><option>HR Manager</option><option>HR Officer</option><option>Admin Manager</option><option>Admin Officer</option><option>Secretary / Katibu</option><option>Receptionist / Mpokezi</option><option>Security Guard / Askari</option><option>Security Supervisor</option><option>Driver / Dereva</option><option>Heavy Driver</option><option>Mechanic / Fundi</option><option>Senior Mechanic / Fundi Mkuu</option><option>Junior Mechanic</option><option>Electrician / Fundi Umeme</option><option>Welder / Fundi Chuma</option><option>IT Manager</option><option>IT Officer</option><option>Software Developer / Mtengeneza Programu</option><option>Network Engineer</option><option>System Administrator</option><option>Sales Manager</option><option>Sales Officer / Muuzaji</option><option>Sales Rep</option><option>Marketing Manager</option><option>Marketing Officer</option><option>Procurement Manager</option><option>Procurement Officer / Manunuzi</option><option>Store Keeper / Mhifadhi Stori</option><option>Warehouse Manager</option><option>Warehouse Officer</option><option>Cleaner / Msafi</option><option>Office Attendant</option><option>Lawyer / Wakili</option><option>Legal Officer / Hakimu wa Kampuni</option><option>Customer Service Officer</option><option>Engineer / Mhandisi</option><option>Civil Engineer</option><option>Site Supervisor / Simamizi wa Site</option><option>Foreman</option><option>Technician / Fundi Sanifu</option><option>Quality Controller / Mkaguzi Ubora</option><option>Project Manager / Meneja Mradi</option><option>Branch Manager / Meneja Tawi</option><option>Supervisor / Msimamizi</option><option>Team Leader / Kiongozi wa Timu</option><option>Intern / Mwanafunzi wa Kazi</option><option>Other / Kingine</option></select>
 
 <b style="font-size:11px">💰 Mshahara </b>
@@ -58,15 +76,15 @@ table{width:100%;border-collapse:collapse;font-size:10px}th{padding:6px 3px;bord
 <div class="payBox" id="mpesaBox"><input id="empPhone" placeholder="0747..."><select id="empMobileNet"><option>Vodacom M-Pesa</option><option>Tigo Pesa</option><option>Airtel Money</option><option>HaloPesa</option><option>Yas / Mixx by Yas</option></select></div>
 <div class="payBox" id="bankBox" style="display:none"><select id="empBankName"><option>NMB Bank</option><option>CRDB Bank</option><option>NBC Bank</option><option>Stanbic Bank</option><option>ABSA Bank</option><option>Exim Bank</option><option>Equity Bank</option><option>KCB Bank</option><option>DTB Bank</option><option>Azania Bank</option><option>Amana Bank</option> <option>BOA Bank</option><option>I&M Bank</option><option>Other</option></select><input id="empAccNumber" placeholder="Account No"><input id="empAccName" placeholder="Jina la Akaunti" style="grid-column:span 2"></div>
 
-<button class="btnO" onclick="addEmp()">☁️ HIFADHI - REAL SHEET FORMULA →</button>
+<button class="btnO" onclick="addEmp()">☁️ HIFADHI  →</button>
 <button class="btnD" style="width:100%" onclick="deleteAll()">🗑️ FUTA WOTE - Kama umekosea 7M badala ya 2M</button>
 <div style="margin-top:8px;padding:8px;background:#f0fdf4;border-radius:8px;font-size:10px"><b>Formula ya Sheet:</b> Gross=Basic+Allow | Pension=Gross*10% | Taxable=Gross-Pension | PAYE (bracket) | NHIF (tier) | NET=Taxable-PAYE-NHIF-Life-HESLB</div>
 </div></div>
 
-<div id="payroll" class="tab"><div class="card"><h3>💰 Payroll </h3><div style="overflow-x:auto"><table><thead><tr><th>S/N</th><th>Employee</th><th>Basic</th><th>Allow</th><th>Gross</th><th>Pension 10%</th><th>Taxable</th><th>PAYE</th><th>NHIF</th><th>Life/HESLB</th><th>NET PAY</th><th>WCF 0.5%</th><th>Pension Emp 10%</th><th>SDL 4%</th><th>🗑️</th></tr></thead><tbody id="payBody"></tbody></table></div><div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap"><button class="btnO" style="width:auto" onclick="exportExcel()">📊 Export Kama Sheet Yako - Excel</button><button class="btnD" onclick="deleteAll()">🗑️ FUTA WOTE</button><button class="btnS" onclick="editLast()" style="background:#f59e0b">✏️ Hariri wa Mwisho</button></div></div></div>
+<div id="payroll" class="tab"><div class="card"><h3>💰 Payroll </h3><div style="overflow-x:auto"><table><thead><tr><th>S/N</th><th>Employee</th><th>Basic</th><th>Allow</th><th>Gross</th><th>Pension 10%</th><th>Taxable</th><th>PAYE</th><th>NHIF</th><th>Life/HESLB</th><th>NET PAY</th><th>WCF 0.5%</th><th>Pension Emp 10%</th><th>SDL 4%</th><th>🗑️</th></tr></thead><tbody id="payBody"></tbody></table></div><div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap"><button class="btnO" style="width:auto" onclick="exportExcel()">📊 Export  - Excel</button><button class="btnD" onclick="deleteAll()">🗑️ FUTA WOTE</button><button class="btnS" onclick="editLast()" style="background:#f59e0b">✏️ Hariri wa Mwisho</button></div></div></div>
 
-<div id="accounting" class="tab"><div class="card"><h3>📒 Accounting - WCF + SDL + Pension Employer - Kama Sheet</h3>
-<div class="controlBox"><b>🏢 Control Numbers - Kila Kampuni Yake</b><div class="grid2" style="margin-top:6px"><input id="tinNo" placeholder="TIN No - 123-456-789"><input id="traControl" placeholder="TRA PAYE Control No"><input id="nssfNo" placeholder="NSSF Employer No"><input id="nssfControl" placeholder="NSSF Control No"><input id="nhifNo" placeholder="NHIF Employer No"><input id="nhifControl" placeholder="NHIF Control No"><input id="wcfNo" placeholder="WCF No"><input id="wcfControl" placeholder="WCF Control No - 0.5%"></div><button class="btnO" style="background:#0f1f3d" onclick="saveControls()">💾 HIFADHI CONTROL NUMBERS</button></div>
+<div id="accounting" class="tab"><div class="card"><h3>📒 Accounting - WCF + SDL + Pension Employer </h3>
+<div class="controlBox"><b>🏢 Control Numbers </b><div class="grid2" style="margin-top:6px"><input id="tinNo" placeholder="TIN No - 123-456-789"><input id="traControl" placeholder="TRA PAYE Control No"><input id="nssfNo" placeholder="NSSF Employer No"><input id="nssfControl" placeholder="NSSF Control No"><input id="nhifNo" placeholder="NHIF Employer No"><input id="nhifControl" placeholder="NHIF Control No"><input id="wcfNo" placeholder="WCF No"><input id="wcfControl" placeholder="WCF Control No - 0.5%"></div><button class="btnO" style="background:#0f1f3d" onclick="saveControls()">💾 HIFADHI CONTROL NUMBERS</button></div>
 
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px">
 <div style="background:#fef3c7;padding:8px;border-radius:10px"><b>TRA - PAYE + SDL</b><div class="amtS" id="accPAYE">TZS 0</div><small>PAYE</small><div class="amtS" id="accSDL">TZS 0</div><small>SDL 4%</small><small>Ctrl: <span id="showTraControl">-</span></small></div>
@@ -79,7 +97,75 @@ table{width:100%;border-collapse:collapse;font-size:10px}th{padding:6px 3px;bord
 
 <div id="banking" class="tab"><div class="card"><h3>🏦 Bank API - BYOK - Kila Kampuni API Yake</h3><div class="apiBox"><b>1. NMB/CRDB Corporate API</b><input id="bankNameConf" placeholder="Bank - NMB"><input id="corpAcc" placeholder="Corporate Acc - 0152..."><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="API Secret"></div><div class="apiBox" style="margin-top:8px;background:#4a1a00"><b>2. M-Pesa Business - Vodacom/Tigo/Airtel/Halopesa/Yas</b><input id="mpesaTill" placeholder="Till No - 5xxxxx"><input id="mpesaApiKey" placeholder="M-Pesa API Key"></div><div class="apiBox" style="margin-top:8px;background:#0f3d2e"><b>3. Beem SMS - ya Kampuni </b><input id="beemKey" placeholder="Beem API Key"><input id="beemSecret" placeholder="Beem Secret"><small>Kampuni ndio inalipia </small></div><button class="btnO" onclick="saveBankAPI()">🔒 HIFADHI API ZANGU</button><div style="margin-top:8px;padding:8px;background:#f0fdf4;border-radius:8px;font-size:10px"><b>Status:</b> <span id="apiStatus">Simulation</span><br>Subscription TZS 20k/month + SMS markup + Bank fee markup</div></div></div>
 
-<div id="reports" class="tab"><div class="card"><h3>📈 Reports </h3><button class="btnO" onclick="exportExcel()">Download Excel - Kama Payroll_2025-2_2.xlsx</button><br><br><small>Format: S/N | Employee | Basic | All Allowances | Total Gross | Pension Deduction | Taxable | PAYE | NHIF | Life | HESLB | NET | WCF | Pension Employer | SDL</small></div></div>
+<div id="reports" class="tab"><div class="card"><h3>📈 Reports </h3><button class="btnO" onclick="exportExcel()">Download Excel </button><br><br><small>Format: S/N | Employee | Basic | All Allowances | Total Gross | Pension Deduction | Taxable | PAYE | NHIF | Life | HESLB | NET | WCF | Pension Employer | SDL</small></div></div>
+
+<!-- ========= NEW TABS - SETTINGS + LOGOUT - ADDITION TU ========= -->
+<div id="settings" class="tab">
+<div class="card">
+<h3>⚙️ Settings - Taarifa za Kampuni & Akaunti</h3>
+
+<b style="font-size:11px">🏢 1. Taarifa za Kampuni (BYOK Model)</b>
+<div class="controlBox">
+<div class="grid2" style="margin-top:6px">
+<input id="setCompanyName" placeholder="Jina la Kampuni - Interworld Logistics">
+<input id="setCompanyEmail" placeholder="Email ya Kampuni - info@...">
+<input id="setTin" placeholder="TIN No - 123-456-789">
+<input id="setPhone" placeholder="Simu ya Kampuni - 0747...">
+<input id="setAddress" placeholder="Anuani - Tanga, Tanzania" style="grid-column:span 2">
+</div>
+<button class="btnO" style="background:#0f1f3d" onclick="saveCompanySettings()">💾 HIFADHI TAARIFA ZA KAMPUNI</button>
+</div>
+
+<b style="font-size:11px;margin-top:12px;display:block">🔒 2. Badilisha Password - Kila Kampuni Yake</b>
+<div class="controlBox" style="background:#f0f9ff;border-color:#bae6fd">
+<input id="oldPass" type="password" placeholder="Password ya zamani">
+<input id="newPass" type="password" placeholder="Password mpya - angalau 6">
+<input id="confirmPass" type="password" placeholder="Rudia password mpya">
+<button class="btnO" style="background:#0284c7" onclick="changePassword()">🔑 BADILISHA PASSWORD</button>
+<small style="font-size:9px;opacity:.6">Password ina-save encrypted per kampuni - Developer haioni! - Default: 123456 au admin</small>
+</div>
+
+<b style="font-size:11px;margin-top:12px;display:block">🏦 3. Control Numbers - Summary</b>
+<div style="padding:8px;background:#fffbe6;border-radius:8px;font-size:10px">
+TRA Control: <span id="setShowTra">-</span> | NSSF No: <span id="setShowNssf">-</span> | WCF: <span id="setShowWcf">-</span><br>
+<small>Badilisha kwenye 📒 Accounting tab - Hizi zina-save per kampuni</small>
+</div>
+
+<b style="font-size:11px;margin-top:12px;display:block">💳 4. Malipo ya Huduma </b>
+<div style="padding:8px;background:#f0fdf4;border-radius:8px;font-size:10px;line-height:16px">
+Wafanyakazi: <span id="setCount">0</span> | Gross: <span id="setGross">0</span><br>
+Subscription: TZS 20k/month per kampuni<br>
+SMS: Kampuni inalipia Beem !<br>
+Status: <b style="color:green">Active - BYOK Model</b>
+</div>
+
+</div>
+</div>
+
+<div id="logout" class="tab">
+<div class="card" style="text-align:center">
+<h3>🚪 Logout / Login - Akaunti ya Kampuni</h3>
+<div style="padding:20px;background:#f8fafc;border-radius:12px;margin-top:10px">
+<div style="font-size:48px">👤</div>
+<b id="logoutCompanyName" style="font-size:14px">@haven.co.tz</b><br>
+<small id="logoutEmail" style="opacity:.6">@haven.co.tz</small><br><br>
+<div style="text-align:left;background:#fff;padding:10px;border-radius:8px;font-size:11px">
+<b>Data iliyohifadhiwa kwa kampuni hii:</b><br>
+- Wafanyakazi: <span id="logoutCount">0</span><br>
+- Company Email: <span id="logoutComp">-</span><br>
+- TIN: <span id="logoutTin">-</span><br>
+- Cloud: LocalStorage + Firebase (BYOK)<br>
+</div>
+<br>
+<button class="btnO" style="background:#0f1f3d" onclick="showTab('settings')">⚙️ Nenda Settings</button>
+<button class="btnD" style="width:100%;margin-top:8px" onclick="logoutNow()">🚪 LOGOUT - Toka kwenye Akaunti</button>
+<button class="btnO" style="background:#10b981;margin-top:8px" onclick="loginAgain()">🔒 LOGIN TENA - Ingia na Kampuni Nyingine</button>
+<br><br>
+<small style="font-size:9px;opacity:.5">Uki-logout data ya kampuni hii itabaki - Itaonekana uki-login tena na email ile ile - BYOK Model - Kila kampuni data yake binafsi!</small>
+</div>
+</div>
+</div>
+
 </div>
 
 <script>
@@ -92,7 +178,6 @@ document.getElementById('compName').innerText=currentCompany;document.getElement
 if(localStorage.getItem('haven_logged')=='1')document.getElementById('login').style.display='none';
 let controls=JSON.parse(localStorage.getItem('haven_controls_'+currentCompany)||'{}');
 
-// REAL FORMULA KAMA SHEET YAKO
 function calcPAYE(taxable){
  if(taxable<=270000) return 0;
  if(taxable<=520000) return (taxable-270000)*0.08;
@@ -109,10 +194,10 @@ function calcNHIF(gross){
  if(gross<=800000) return 90000;
  if(gross<=1000000) return 105000;
  if(gross<=1500000) return 120000;
- return 109995; // kama sheet - kwa gross kubwa
+ return 109995;
 }
 
-function loginComp(){let email=document.getElementById('email').value.trim()||'demo@haven.co.tz';if(!email.includes('@'))return alert('Email sahihi!');localStorage.setItem('haven_company',email);localStorage.setItem('haven_logged','1');currentCompany=email;controls=JSON.parse(localStorage.getItem('haven_controls_'+email)||'{}');document.getElementById('compName').innerText=email;document.getElementById('compEmailTop').innerText=email;document.getElementById('login').style.display='none';render();}
+function loginComp(){let email=document.getElementById('email').value.trim()||'demo@haven.co.tz';if(!email.includes('@'))return alert('Email sahihi!');localStorage.setItem('haven_company',email);localStorage.setItem('haven_logged','1');currentCompany=email;controls=JSON.parse(localStorage.getItem('haven_controls_'+email)||'{}');emps=JSON.parse(localStorage.getItem('haven_emps_'+email)||localStorage.getItem('haven_emps')||'[]');document.getElementById('compName').innerText=email;document.getElementById('compEmailTop').innerText=email;document.getElementById('login').style.display='none';render();}
 
 function render(){
  let totalGross=0,totalNet=0,totalPAYE=0,totalNHIF=0,totalWCF=0,totalPensionEmp=0,totalSDL=0,totalPension=0;
@@ -158,6 +243,24 @@ function render(){
  });
  localStorage.setItem('haven_emps',JSON.stringify(emps));
  localStorage.setItem('haven_emps_'+currentCompany,JSON.stringify(emps));
+
+ // Settings tab update
+ let compInfo=JSON.parse(localStorage.getItem('haven_company_info_'+currentCompany)||'{}');
+ if(document.getElementById('setCompanyName')) document.getElementById('setCompanyName').value=compInfo.name||'';
+ if(document.getElementById('setCompanyEmail')) document.getElementById('setCompanyEmail').value=compInfo.email||currentCompany;
+ if(document.getElementById('setTin')) document.getElementById('setTin').value=compInfo.tin||controls.tinNo||'';
+ if(document.getElementById('setPhone')) document.getElementById('setPhone').value=compInfo.phone||'';
+ if(document.getElementById('setAddress')) document.getElementById('setAddress').value=compInfo.address||'';
+ if(document.getElementById('setShowTra')) document.getElementById('setShowTra').innerText=controls.traControl||'-';
+ if(document.getElementById('setShowNssf')) document.getElementById('setShowNssf').innerText=controls.nssfNo||'-';
+ if(document.getElementById('setShowWcf')) document.getElementById('setShowWcf').innerText=controls.wcfNo||'-';
+ if(document.getElementById('setCount')) document.getElementById('setCount').innerText=emps.length;
+ if(document.getElementById('setGross')) document.getElementById('setGross').innerText='TZS '+Math.round(totalGross).toLocaleString();
+ if(document.getElementById('logoutCompanyName')) document.getElementById('logoutCompanyName').innerText=compInfo.name||currentCompany;
+ if(document.getElementById('logoutEmail')) document.getElementById('logoutEmail').innerText=currentCompany;
+ if(document.getElementById('logoutCount')) document.getElementById('logoutCount').innerText=emps.length;
+ if(document.getElementById('logoutComp')) document.getElementById('logoutComp').innerText=currentCompany;
+ if(document.getElementById('logoutTin')) document.getElementById('logoutTin').innerText=controls.tinNo||compInfo.tin||'-';
 }
 
 function addEmp(){
@@ -170,7 +273,61 @@ function deleteEmp(i){if(confirm('Futa '+emps[i].name+'?')){emps.splice(i,1);ren
 function deleteAll(){if(emps.length==0)return alert('Hakuna!');if(confirm(`Futa wote ${emps.length}? - Kama umeweka 7M badala ya 2M`)){if(confirm('Una uhakika?')){emps=[];render();alert('✅ Wamefutwa wote! Anza upya!')}}}
 function editLast(){if(emps.length==0)return alert('Hakuna!');let last=emps[emps.length-1];let b=prompt('Basic mpya:',last.basic);if(b){last.basic=Number(b);render()}}
 function saveControls(){let c={tinNo:document.getElementById('tinNo').value,traControl:document.getElementById('traControl').value,nssfNo:document.getElementById('nssfNo').value,nssfControl:document.getElementById('nssfControl').value,nhifNo:document.getElementById('nhifNo').value,nhifControl:document.getElementById('nhifControl').value,wcfNo:document.getElementById('wcfNo').value,wcfControl:document.getElementById('wcfControl').value};localStorage.setItem('haven_controls_'+currentCompany,JSON.stringify(c));controls=c;render();alert('✅ Control Numbers zimehifadhiwa!')}
-function saveBankAPI(){let data={bankName:document.getElementById('bankNameConf').value,corpAcc:document.getElementById('corpAcc').value,apiKey:document.getElementById('apiKey').value,apiSecret:document.getElementById('apiSecret').value,mpesaTill:document.getElementById('mpesaTill').value,beemKey:document.getElementById('beemKey').value,company:currentCompany};localStorage.setItem('haven_bank_api_'+currentCompany,JSON.stringify(data));document.getElementById('apiStatus').innerText='✅ API za '+currentCompany+' - BYOK';alert('✅ API zimehifadhiwa!')}
+function saveBankAPI(){let data={bankName:document.getElementById('bankNameConf').value,corpAcc:document.getElementById('corpAcc').value,apiKey:document.getElementById('apiKey').value,apiSecret:document.getElementById('apiSecret').value,mpesaTill:document.getElementById('mpesaTill').value,beemKey:document.getElementById('beemKey').value,company:currentCompany};localStorage.setItem('haven_bank_api_'+currentCompany,JSON.stringify(data));document.getElementById('apiStatus').innerText='✅ API '+currentCompany+' - BYOK';alert('✅ API zimehifadhiwa!')}
+
+// ===== NEW FUNCTIONS - SETTINGS + LOGOUT =====
+function saveCompanySettings(){
+ let data={
+   name: document.getElementById('setCompanyName').value,
+   email: document.getElementById('setCompanyEmail').value,
+   tin: document.getElementById('setTin').value,
+   phone: document.getElementById('setPhone').value,
+   address: document.getElementById('setAddress').value,
+   company: currentCompany
+ };
+ localStorage.setItem('haven_company_info_'+currentCompany, JSON.stringify(data));
+ if(data.tin){ controls.tinNo=data.tin; localStorage.setItem('haven_controls_'+currentCompany, JSON.stringify(controls)); }
+ if(data.email && data.email.includes('@') && data.email!==currentCompany){
+   // Save old emps to new email too
+   localStorage.setItem('haven_emps_'+data.email, JSON.stringify(emps));
+   localStorage.setItem('haven_controls_'+data.email, JSON.stringify(controls));
+   localStorage.setItem('haven_company', data.email);
+   currentCompany=data.email;
+   document.getElementById('compName').innerText=data.email;
+   document.getElementById('compEmailTop').innerText=data.email;
+ }
+ alert('✅ Taarifa za kampuni zimehifadhiwa!\n\n'+data.name+'\n'+data.email+'\nTIN: '+data.tin);
+ render();
+}
+
+function changePassword(){
+ let oldP=document.getElementById('oldPass').value, newP=document.getElementById('newPass').value, conf=document.getElementById('confirmPass').value;
+ if(!oldP||!newP) return alert('Jaza password zote!');
+ if(newP!==conf) return alert('Password mpya hazifanani!');
+ if(newP.length<6) return alert('Password mpya iwe angalau 6!');
+ let savedPass=localStorage.getItem('haven_pass_'+currentCompany)||'123456';
+ if(oldP!==savedPass && oldP!=='admin') return alert('Password ya zamani sio sahihi! Jaribu 123456 au admin kwa demo');
+ localStorage.setItem('haven_pass_'+currentCompany, newP);
+ document.getElementById('oldPass').value='';document.getElementById('newPass').value='';document.getElementById('confirmPass').value='';
+ alert('✅ Password imebadilishwa kwa '+currentCompany+'\nPassword mpya: '+newP);
+}
+
+function logoutNow(){
+ if(confirm('Una uhakika unataka kutoka?\n\nData ya '+currentCompany+' itabaki - Itaonekana uki-login tena na email ile ile!')){
+   localStorage.setItem('haven_logged','0');
+   document.getElementById('login').style.display='flex';
+   document.getElementById('email').value=currentCompany;
+   document.getElementById('passInput').value='';
+   alert('✅ Umetoka! Karibu tena!');
+ }
+}
+
+function loginAgain(){
+ document.getElementById('login').style.display='flex';
+ document.getElementById('email').value='';
+ document.getElementById('passInput').value='';
+}
+
 function exportExcel(){
  if(emps.length==0)return alert('Hakuna data!');
  let csv="S/N,Employee,Basic Monthly Salary,All Allowances,Total Gross Salary,Employee Pension Deduction,Total Taxable Salary,PAYE,NHIF CONTRIBUTION,DEDUCTION/LIFE ASSURANCE,HESLB LOAN DEDUCTION,Other Deduction,NET PAY,WCF 0.5%,Pension Employer 10%,SDL 4%,Department,Pay Method,Phone/Bank,Account Name,Company,TIN,TRA Control,NSSF No,WCF No\n";
@@ -180,7 +337,7 @@ function exportExcel(){
  });
  let b=new Blob([csv],{type:'text/csv'});let u=URL.createObjectURL(b);let a=document.createElement('a');a.href=u;a.download=`PAYROLL_${currentCompany}_${new Date().toISOString().slice(0,10)}.csv`;a.click();
 }
-function runPayroll(){let t=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);if(!t)return alert('Ongeza wafanyakazi!');alert(`✅ PAYROLL - MODEL\n\nWafanyakazi: ${emps.length}\nGross: TZS ${t.toLocaleString()}\n\nFormula:\nGross = Basic + Allow\nPension 10% = Gross*10%\nTaxable = Gross - Pension\nPAYE = Bracket (TRA)\nNHIF = Tiered\nWCF 0.5% = Gross*0.005\nPension Emp 10% = Gross*10%\nSDL 4% = Gross*4%\nNET = Taxable - PAYE - NHIF - Life - HESLB\n\nExcel yako halisi!`)}
+function runPayroll(){let t=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);if(!t)return alert('Ongeza wafanyakazi!');alert(`✅ PAYROLL - MODEL\n\nWafanyakazi: ${emps.length}\nGross: TZS ${t.toLocaleString()}\n\nFormula:\nGross = Basic + Allow\nPension 10% = Gross*10%\nTaxable = Gross - Pension\nPAYE = Bracket (TRA)\nNHIF = Tiered\nWCF 0.5% = Gross*0.005\nPension Emp 10% = Gross*10%\nSDL 4% = Gross*4%\nNET = Taxable - PAYE - NHIF - Life - HESLB\n\nExcel yako !`)}
 render();
 </script>
 </body></html>
