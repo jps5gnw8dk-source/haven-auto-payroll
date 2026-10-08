@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HAVEN AUTO-PAY - Vyeo + Bank</title>
+<title>HAVEN AUTO-PAY - Pie Chart Back</title>
 <style>
 *{box-sizing:border-box;font-family:-apple-system,system-ui}body{margin:0;background:#f0f3f9;display:flex;min-height:100vh}
 .sidebar{width:200px;background:#0f1f3d;color:#fff;display:flex;flex-direction:column;padding:16px 0;position:fixed;left:0;top:0;bottom:0;z-index:10}
 .logo{padding:0 16px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #ffffff22;margin-bottom:10px}
 .logo b{font-size:18px;line-height:18px}.logo span{background:#FF7A00;padding:8px 10px;border-radius:10px}
-.menu{display:flex;flex-direction:column;gap:4px;padding:0 10px}.menu div{padding:11px 12px;border-radius:10px;cursor:pointer;font-size:13px;opacity:.8;display:flex;gap:8px;align-items:center}.menu div.active{background:#FF7A00;opacity:1;font-weight:900;color:#fff}
+.menu{display:flex;flex-direction:column;gap:4px;padding:0 10px}.menu div{padding:11px 12px;border-radius:10px;cursor:pointer;font-size:13px;opacity:.8;display:flex;gap:8px}.menu div.active{background:#FF7A00;opacity:1;font-weight:900;color:#fff}
 .admin{margin-top:auto;padding:12px 16px;font-size:11px;opacity:.5;border-top:1px solid #ffffff22}
 .main{margin-left:200px;flex:1;padding:14px;width:calc(100% - 200px)}
 .top{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;padding:12px;border-radius:12px;margin-bottom:12px;flex-wrap:wrap}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
-.card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px #0001}
+.card{background:#fff;border-radius:16px;padding:14px;box-shadow:0 4px 14px #0001;border:1px solid #eef2f7}
+.pieWrap{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.pie{width:120px;height:120px;border-radius:50%;background:conic-gradient(#FF7A00 0% 40%,#0f1f3d 40% 65%,#4a7ac7 65% 80%,#2fb5b0 80% 100%);box-shadow:0 0 0 6px #fff,0 6px 16px #0002;animation:spin 1.2s ease}
+@keyframes spin{from{transform:rotate(-90deg) scale(.8)}to{transform:rotate(0) scale(1)}}
+.legend{font-size:12px;line-height:22px}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
 .btnO{background:#FF7A00;color:#fff;border:0;padding:10px 14px;border-radius:10px;font-weight:800;cursor:pointer;width:100%;margin-top:8px}
-.btnS{background:#0f1f3d;color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+.btnS{background:#0f1f3d;color:#fff;border:0;padding:8px 12px;border-radius:8px}
 .tab{display:none}.tab.active{display:block}
 input,select{width:100%;padding:10px;border-radius:10px;border:1px solid #ddd;margin:4px 0;font-size:14px}
 .payBox{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f8fafc;padding:10px;border-radius:10px;border:1px dashed #cbd5e1;margin-top:8px}
@@ -21,7 +25,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th{padding:8px 6px;bord
 #login{position:fixed;inset:0;background:#0f1f3de6;z-index:99;display:flex;align-items:center;justify-content:center;padding:16px}
 .mobMenu{display:none;position:fixed;top:0;left:0;right:0;background:#0f1f3d;color:#fff;padding:10px 14px;z-index:20;justify-content:space-between;align-items:center}
 .mobDrawer{display:none;position:fixed;left:0;top:50px;bottom:0;width:210px;background:#0f1f3d;z-index:19;padding:10px 0;overflow:auto}
-@media(max-width:700px){.sidebar{display:none}.main{margin-left:0;width:100%;padding-top:60px}.mobMenu{display:flex}.mobDrawer.active{display:flex;flex-direction:column}.payBox{grid-template-columns:1fr}}
+@media(max-width:700px){.sidebar{display:none}.main{margin-left:0;width:100%;padding-top:60px}.mobMenu{display:flex}.mobDrawer.active{display:flex;flex-direction:column}.payBox{grid-template-columns:1fr}.pieWrap{flex-direction:column}}
 </style></head>
 <body>
 
@@ -31,10 +35,10 @@ table{width:100%;border-collapse:collapse;font-size:13px}th{padding:8px 6px;bord
 <div id="mobDrawer" class="mobDrawer">
 <div style="display:flex;flex-direction:column;gap:4px;padding:0 10px">
 <div style="padding:12px;background:#FF7A00;border-radius:10px;font-weight:900" onclick="showTab('dash');mobDrawer.classList.remove('active')">📊 Dashboard</div>
-<div style="padding:12px;opacity:.8" onclick="showTab('staff');mobDrawer.classList.remove('active')">👥 Staff</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('staff');mobDrawer.classList.remove('active')">👥 Employees</div>
 <div style="padding:12px;opacity:.8" onclick="showTab('payroll');mobDrawer.classList.remove('active')">💰 Payroll</div>
 <div style="padding:12px;opacity:.8" onclick="showTab('payments');mobDrawer.classList.remove('active')">💳 Payments</div>
-<div style="padding:12px;opacity:.8" onclick="showTab('banking');mobDrawer.classList.remove('active')">🏦 NMB Bank</div>
+<div style="padding:12px;opacity:.8" onclick="showTab('banking');mobDrawer.classList.remove('active')">🏦 Banking</div>
 <div style="padding:12px;opacity:.8" onclick="showTab('reports');mobDrawer.classList.remove('active')">📈 Reports</div>
 <div style="padding:12px;opacity:.8" onclick="showTab('settings');mobDrawer.classList.remove('active')">⚙️ Settings</div>
 </div>
@@ -56,151 +60,74 @@ table{width:100%;border-collapse:collapse;font-size:13px}th{padding:8px 6px;bord
 </div>
 
 <div class="main">
-<div class="top"><div><small style="color:#FF7A00;font-weight:800">Payroll Engine</small><br><b>Haven Fleet Care • Tanga 🇹🇿 • <span id="date"></span></b></div><button class="btnS" style="background:#FF7A00" onclick="runPayroll()">⚡ RUN PAYROLL NOW</button></div>
+<div class="top"><div><small style="color:#FF7A00;font-weight:800">Smart Payroll Engine</small><br><b>Haven Fleet Care • Tanga 🇹🇿 • <span id="date"></span></b></div><button class="btnS" style="background:#FF7A00" onclick="runPayroll()">⚡ RUN PAYROLL NOW</button></div>
 
 <div id="dash" class="tab active">
-<div class="cards"><div class="card"><small>🏦 Bank Balance</small><div style="font-size:22px;font-weight:900">TZS 6,000,000</div></div><div class="card"><small>💰 Total Payroll</small><div style="font-size:22px;font-weight:900" id="total">TZS 0</div><small><span id="count">0</span> staff</small></div><div class="card"><small>⏰ Next Run</small><div style="font-weight:800">30 Oct 2026</div><small style="color:green">● NMB Connected</small></div></div>
-<div class="card"><small>Staff Status</small><table><thead><tr><th>STAFF</th><th>ROLE</th><th>PAY MODE</th><th>AMOUNT</th></tr></thead><tbody id="staffBody"></tbody></table></div>
+<div class="cards"><div class="card"><small>🏦 Company Balance</small><div style="font-size:22px;font-weight:900">TZS 6,000,000</div><small style="color:green">↗ +450k</small></div><div class="card"><small>💰 Total Payroll</small><div style="font-size:22px;font-weight:900" id="total">TZS 0</div><small><span id="count">0</span> staff • 100% processed</small></div><div class="card"><small>⏰ Next Run</small><div style="font-weight:800">30 Oct 2026 • 09:00</div><small style="color:green">● NMB Connected</small></div></div>
+
+<div class="cards" style="grid-template-columns:1.1fr.9fr">
+<div class="card">
+<b style="font-size:14px">Payroll Distribution - <span id="month"></span></b>
+<div class="pieWrap">
+<div class="pie" id="pie"></div>
+<div class="legend">
+<div><span class="dot" style="background:#FF7A00"></span>Salaries 40% - <b id="sSal">TZS 0</b></div>
+<div><span class="dot" style="background:#0f1f3d"></span>Tax & Deduction 25% - <b id="sTax">TZS 0</b></div>
+<div><span class="dot" style="background:#4a7ac7"></span>Allowances 20% - <b id="sAllow">TZS 0</b></div>
+<div><span class="dot" style="background:#2fb5b0"></span>Bonuses 15% - <b id="sBon">TZS 0</b></div>
+<div style="margin-top:8px;display:flex;gap:6px"><button class="btnS" style="background:#FF7A00;font-size:11px" onclick="exportExcel()">📊 Excel</button><button class="btnS" style="font-size:11px" onclick="window.print()">PDF</button></div>
+</div>
+</div>
+</div>
+<div class="card"><b style="font-size:14px">Staff Auto-Pay Status</b><table style="margin-top:8px"><thead><tr><th>STAFF</th><th>PAY MODE</th><th>AMT</th></tr></thead><tbody id="staffBody"></tbody></table></div>
+</div>
+
+<div class="card" style="display:flex;justify-content:space-between;align-items:center"><div><b>Region Activity - Dar es Salaam</b><br><small>Tanzania • 42 staff coverage</small></div><span style="background:#dcfce7;color:#166534;padding:4px 8px;border-radius:20px;font-size:11px;font-weight:800">Active</span></div>
 </div>
 
 <div id="staff" class="tab">
 <div class="card">
-<h3>👥 Ongeza Mfanyakazi - Vyeo Vyote TZ</h3>
-<input id="name" placeholder="Jina Kamili - mf: Juma Hassan">
-
-<label style="font-size:11px;font-weight:800;margin-top:6px;display:block">Chagua Cheo / Nafasi - Vyeo vyote vya TZ:</label>
-<select id="pos">
-<option value="">-- Chagua Cheo --</option>
-<option>CEO / Mkurugenzi Mkuu</option>
-<option>Managing Director / Mkurugenzi Mtendaji</option>
-<option>General Manager / Meneja Mkuu</option>
-<option>Operations Manager / Meneja Uendeshaji</option>
-<option>Finance Manager / Meneja Fedha</option>
-<option>Accountant / Mhasibu</option>
-<option>Senior Accountant / Mhasibu Mwandamizi</option>
-<option>Chief Accountant</option>
-<option>Auditor / Mkaguzi</option>
-<option>Internal Auditor / Mkaguzi wa Ndani</option>
-<option>External Auditor</option>
-<option>Cashier / Karani wa Fedha</option>
-<option>HR Manager / Meneja Rasilimali Watu</option>
-<option>HR Officer / Afisa Utumishi</option>
-<option>Administrative Officer / Afisa Tawala</option>
-<option>Secretary / Katibu</option>
-<option>Receptionist / Mapokezi</option>
-<option>Security Guard / Askari</option>
-<option>Security Supervisor / Msimamizi wa Ulinzi</option>
-<option>Driver / Dereva</option>
-<option>Fleet Driver / Dereva wa Magari</option>
-<option>Mechanic / Fundi Mitambo</option>
-<option>Senior Mechanic / Fundi Mkuu</option>
-<option>Electrician / Fundi Umeme</option>
-<option>IT Officer / Afisa TEHAMA</option>
-<option>IT Manager / Meneja TEHAMA</option>
-<option>System Administrator</option>
-<option>Software Developer / Mtengenezaji Programu</option>
-<option>Network Engineer</option>
-<option>Sales Manager / Meneja Mauzo</option>
-<option>Sales Representative / Mwakilishi wa Mauzo</option>
-<option>Sales Executive</option>
-<option>Marketing Manager / Meneja Masoko</option>
-<option>Marketing Officer / Afisa Masoko</option>
-<option>Procurement Officer / Afisa Manunuzi</option>
-<option>Store Keeper / Mhifadhi Ghala</option>
-<option>Warehouse Manager / Meneja Ghala</option>
-<option>Inventory Officer</option>
-<option>Cleaner / Msafi</option>
-<option>Cook / Mpishi</option>
-<option>Gardener / Mtunza Bustani</option>
-<option>Lawyer / Wakili / Mwanasheria</option>
-<option>Legal Officer / Afisa Sheria / Hakimu wa Kampuni</option>
-<option>Customer Service Officer / Huduma kwa Wateja</option>
-<option>Customer Care Representative</option>
-<option>Engineer / Mhandisi</option>
-<option>Field Engineer / Mhandisi wa Shambani</option>
-<option>Site Supervisor / Msimamizi wa Mradi</option>
-<option>Foreman / Karani wa Kazi</option>
-<option>Technician / Fundi Sanifu</option>
-<option>Quality Controller / Mdhibiti Ubora</option>
-<option>Research Officer / Afisa Utafiti</option>
-<option>Project Manager / Meneja Mradi</option>
-<option>Project Officer / Afisa Mradi</option>
-<option>Branch Manager / Meneja Tawi</option>
-<option>Assistant Manager / Meneja Msaidizi</option>
-<option>Supervisor / Msimamizi</option>
-<option>Team Leader / Kiongozi wa Timu</option>
-<option>Office Assistant / Msaidizi wa Ofisi</option>
-<option>Intern / Mwanafunzi wa Kazi</option>
-<option>Volunteer / Kujitolea</option>
-<option>Consultant / Mshauri</option>
-<option>Board Member / Mjumbe wa Bodi</option>
-<option>Other / Kingine</option>
-</select>
-
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
-<input id="basic" type="number" placeholder="Mshahara Msingi - 800000">
-<input id="allow" type="number" placeholder="Posho - 150000">
-</div>
-
-<label style="font-size:11px;font-weight:800;margin-top:10px;display:block">💳 Njia ya Malipo:</label>
-<select id="payMethod" onchange="togglePay()">
-<option value="M-Pesa">M-Pesa / Tigo Pesa / Airtel Money</option>
-<option value="Bank">Bank Account / Akaunti ya Benki</option>
-</select>
-
-<div class="payBox" id="mpesaBox">
-<input id="phone" placeholder="Namba ya M-Pesa - 0747 092 240">
-<select id="mobileNet"><option>Vodacom M-Pesa</option><option>Tigo Pesa</option><option>Airtel Money</option><option>HaloPesa</option></select>
-</div>
-
-<div class="payBox" id="bankBox" style="display:none">
-<select id="bankName">
-<option>NMB Bank</option>
-<option>CRDB Bank</option>
-<option>NBC Bank</option>
-<option>Stanbic Bank</option>
-<option>ABSA Bank</option>
-<option>Exim Bank</option>
-<option>Equity Bank</option>
-<option>KCB Bank</option>
-<option>DTB Bank</option>
-<option>Azania Bank</option>
-<option>Other Bank</option>
-</select>
-<input id="accNumber" placeholder="Account Number - 0152xxxxxxx">
-<input id="accName" placeholder="Jina la Akaunti - Juma Hassan" style="grid-column:span 2">
-</div>
-
+<h3>👥 Ongeza Mfanyakazi</h3>
+<input id="name" placeholder="Jina Kamili">
+<select id="pos"><option value="">-- Chagua Cheo - Vyeo vyote TZ --</option><option>CEO / Mkurugenzi Mkuu</option><option>Managing Director</option><option>General Manager</option><option>Operations Manager</option><option>Finance Manager</option><option>Accountant / Mhasibu</option><option>Senior Accountant</option><option>Auditor / Mkaguzi</option><option>Internal Auditor</option><option>Cashier</option><option>HR Manager</option><option>HR Officer</option><option>Admin Officer</option><option>Secretary</option><option>Receptionist</option><option>Security Guard / Askari</option><option>Security Supervisor</option><option>Driver / Dereva</option><option>Mechanic / Fundi</option><option>Senior Mechanic</option><option>Electrician</option><option>IT Officer</option><option>IT Manager</option><option>Software Developer</option><option>Sales Manager</option><option>Sales Rep</option><option>Marketing Manager</option><option>Marketing Officer</option><option>Procurement Officer</option><option>Store Keeper</option><option>Warehouse Manager</option><option>Cleaner / Msafi</option><option>Cook / Mpishi</option><option>Lawyer / Wakili</option><option>Legal Officer / Hakimu wa Kampuni</option><option>Customer Service</option><option>Engineer / Mhandisi</option><option>Field Engineer</option><option>Site Supervisor</option><option>Technician</option><option>Quality Controller</option><option>Project Manager</option><option>Branch Manager</option><option>Supervisor</option><option>Team Leader</option><option>Intern</option><option>Other / Kingine</option></select>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="basic" type="number" placeholder="Mshahara"><input id="allow" type="number" placeholder="Posho"></div>
+<label style="font-size:11px;font-weight:800;margin-top:8px;display:block">💳 Njia ya Malipo:</label>
+<select id="payMethod" onchange="togglePay()"><option value="M-Pesa">M-Pesa / Tigo Pesa / Airtel Money</option><option value="Bank">Bank Account / Benki</option></select>
+<div class="payBox" id="mpesaBox"><input id="phone" placeholder="Namba ya M-Pesa 0747..."><select id="mobileNet"><option>Vodacom M-Pesa</option><option>Tigo Pesa</option><option>Airtel Money</option><option>HaloPesa</option></select></div>
+<div class="payBox" id="bankBox" style="display:none"><select id="bankName"><option>NMB Bank</option><option>CRDB Bank</option><option>NBC Bank</option><option>Stanbic Bank</option><option>ABSA Bank</option><option>Exim Bank</option><option>Equity Bank</option><option>KCB Bank</option><option>Other Bank</option></select><input id="accNumber" placeholder="Account Number"><input id="accName" placeholder="Jina la Akaunti" style="grid-column:span 2"></div>
 <button class="btnO" onclick="addEmp()">💾 HIFADHI MFANYAKAZI →</button>
 </div>
 </div>
 
-<div id="payroll" class="tab"><div class="card"><h3>💰 Payroll</h3><table><thead><tr><th>Jina</th><th>Njia</th><th>Net</th><th>Lipa</th></tr></thead><tbody id="payBody"></tbody></table><button class="btnO" style="margin-top:10px" onclick="exportExcel()">📊 Export Excel - Bank + M-Pesa</button></div><div id="slip"></div></div>
-<div id="payments" class="tab"><div class="card"><h3>💳 Payments</h3><div id="payList"></div><button class="btnO" style="margin-top:10px" onclick="runPayroll()">⚡ RUN PAYROLL NOW - Lipa Wote</button></div></div>
-<div id="banking" class="tab"><div class="card"><h3>🏦 NMB Integration - Connected ✓</h3><small>Bulk payment ready for Bank & Mobile</small><br><br><b>Balance: TZS 6,000,000</b><br><b>Payroll: <span id="bankTotal">TZS 0</span></b></div></div>
-<div id="reports" class="tab"><div class="card"><h3>📈 Reports</h3><button class="btnO" onclick="exportExcel()">Download Excel (Bank + Mobile)</button> <button class="btnS" onclick="window.print()">Print PDF</button></div></div>
+<div id="payroll" class="tab"><div class="card"><h3>💰 Payroll</h3><table><thead><tr><th>Jina</th><th>Njia</th><th>Net</th><th></th></tr></thead><tbody id="payBody"></tbody></table><button class="btnO" style="margin-top:10px" onclick="exportExcel()">📊 Export Excel</button></div><div id="slip"></div></div>
+<div id="payments" class="tab"><div class="card"><h3>💳 Payments</h3><div id="payList"></div><button class="btnO" onclick="runPayroll()">⚡ RUN PAYROLL NOW</button></div></div>
+<div id="banking" class="tab"><div class="card"><h3>🏦 NMB Bank - Connected ✓</h3><b>Balance: TZS 6,000,000</b><br><b>Payroll: <span id="bankTotal">TZS 0</span></b><br><br><small>Secure API • Last synced 2min ago</small></div></div>
+<div id="reports" class="tab"><div class="card"><h3>📈 Reports</h3><button class="btnO" onclick="exportExcel()">Download Excel</button> <button class="btnS" onclick="window.print()">Print PDF</button></div></div>
 <div id="settings" class="tab"><div class="card"><h3>⚙️ Settings</h3><input id="newPass" placeholder="New password"><button class="btnS" onclick="localStorage.setItem('haven_pass',newPass.value);alert('Saved!')">Save</button></div></div>
 
 </div>
 
 <script>
 function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.menu div').forEach(m=>m.classList.remove('active'));let el=document.getElementById('m-'+id);if(el)el.classList.add('active');if(window.innerWidth<=700)document.getElementById('mobDrawer').classList.remove('active')}
-function togglePay(){let m=document.getElementById('payMethod').value;document.getElementById('mpesaBox').style.display=m=='M-Pesa'?'grid':'none';document.getElementById('bankBox').style.display=m=='Bank'?'grid':'none'}
-document.getElementById('date').innerText=new Date().toLocaleDateString('sw-TZ',{month:'short',year:'numeric'});
+function togglePay(){let m=payMethod.value;mpesaBox.style.display=m=='M-Pesa'?'grid':'none';bankBox.style.display=m=='Bank'?'grid':'none'}
+date.innerText=new Date().toLocaleDateString('sw-TZ',{month:'short',year:'numeric'});month.innerText=new Date().toLocaleDateString('sw-TZ',{month:'long',year:'numeric'});
 let emps=JSON.parse(localStorage.getItem('haven_emps')||'[]');
 if(!localStorage.getItem('haven_pass'))localStorage.setItem('haven_pass','haven123');
-if(localStorage.getItem('haven_logged')=='1')document.getElementById('login').style.display='none';
+if(localStorage.getItem('haven_logged')=='1')login.style.display='none';
 function render(){
  let total=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);
- document.getElementById('total').innerText='TZS '+total.toLocaleString();document.getElementById('count').innerText=emps.length;document.getElementById('bankTotal').innerText='TZS '+total.toLocaleString();
- let tb=document.getElementById('staffBody'),pb=document.getElementById('payBody'),pl=document.getElementById('payList');if(tb)tb.innerHTML='';if(pb)pb.innerHTML='';if(pl)pl.innerHTML='';
+ totalEl=document.getElementById('total');if(totalEl)totalEl.innerText='TZS '+total.toLocaleString();
+ count.innerText=emps.length;bankTotal.innerText='TZS '+total.toLocaleString();
+ let sSalV=Math.round(total*0.4),sTaxV=Math.round(total*0.25),sAllowV=Math.round(total*0.2),sBonV=Math.round(total*0.15);
+ document.getElementById('sSal').innerText='TZS '+sSalV.toLocaleString();document.getElementById('sTax').innerText='TZS '+sTaxV.toLocaleString();document.getElementById('sAllow').innerText='TZS '+sAllowV.toLocaleString();document.getElementById('sBon').innerText='TZS '+sBonV.toLocaleString();
+ let tb=staffBody,pb=payBody,pl=payList;if(tb)tb.innerHTML='';if(pb)pb.innerHTML='';if(pl)pl.innerHTML='';
  emps.forEach((e,i)=>{
    let g=Number(e.basic)+Number(e.allow),n=Math.round(g*0.91);
-   let payMode=e.payMethod=='Bank'?`🏦 ${e.bankName||'Bank'}`:`📱 ${e.mobileNet||'M-Pesa'}`;
-   let payDetail=e.payMethod=='Bank'?e.accNumber:e.phone;
-   if(tb)tb.innerHTML+=`<tr><td><b>${e.name.slice(0,12)}</b></td><td style="font-size:11px">${e.pos.slice(0,15)}</td><td style="font-size:11px">${payMode}<br><small style="opacity:.6">${payDetail||''}</small></td><td>TZS ${n.toLocaleString()}</td></tr>`;
-   if(pb)pb.innerHTML+=`<tr><td>${e.name}<br><small style="opacity:.6">${e.pos}</small></td><td>${payMode}</td><td>${n.toLocaleString()}</td><td><button onclick="lipamPesa(${i})" style="background:${e.payMethod=='Bank'?'#0f1f3d':'#FF7A00'};color:#fff;border:0;padding:5px 10px;border-radius:6px;font-size:11px">${e.payMethod=='Bank'?'BANK':'M-PESA'}</button></td></tr>`;
-   if(pl)pl.innerHTML+=`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee"><span>${e.name} - ${payMode}</span><span>TZS ${n.toLocaleString()}</span></div>`;
+   let payMode=e.payMethod=='Bank'?`🏦 ${e.bankName}`:`📱 ${e.mobileNet}`;
+   let detail=e.payMethod=='Bank'?e.accNumber:e.phone;
+   if(tb)tb.innerHTML+=`<tr><td><b>${e.name.slice(0,10)}</b><br><small style="opacity:.6">${e.pos.slice(0,12)}</small></td><td style="font-size:11px">${payMode}<br><small style="opacity:.6">${detail||''}</small></td><td>TZS ${n.toLocaleString()}</td></tr>`;
+   if(pb)pb.innerHTML+=`<tr><td>${e.name}<br><small>${e.pos}</small></td><td>${payMode}</td><td>${n.toLocaleString()}</td><td><button onclick="lipamPesa(${i})" style="background:${e.payMethod=='Bank'?'#0f1f3d':'#FF7A00'};color:#fff;border:0;padding:5px 10px;border-radius:6px">${e.payMethod=='Bank'?'BANK':'M-PESA'}</button></td></tr>`;
+   if(pl)pl.innerHTML+=`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee"><span>${e.name} - ${payMode}</span><span>${n.toLocaleString()}</span></div>`;
  });
  localStorage.setItem('haven_emps',JSON.stringify(emps));
 }
@@ -208,13 +135,13 @@ function addEmp(){
  let n=name.value,b=basic.value,a=allow.value||0,p=pos.value,method=payMethod.value,ph=phone.value,mNet=mobileNet.value,bank=bankName.value,accNum=accNumber.value,accName=accName.value;
  if(!n||!b||!p)return alert('Jaza Jina, Cheo na Mshahara!');
  if(method=='M-Pesa'&&!ph)return alert('Weka namba ya M-Pesa!');
- if(method=='Bank'&&!accNum)return alert('Weka Account Number ya Bank!');
+ if(method=='Bank'&&!accNum)return alert('Weka Account Number!');
  emps.push({name:n,pos:p,basic:b,allow:a,payMethod:method,phone:ph,mobileNet:mNet,bankName:bank,accNumber:accNum,accName:accName});
- name.value='';basic.value='';allow.value='';phone.value='';accNumber.value='';accName.value='';render();showTab('payroll');alert('✅ '+n+' ('+p+') amehifadhiwa - Kulipwa kwa '+method);
+ name.value='';basic.value='';allow.value='';phone.value='';accNumber.value='';accName.value='';render();showTab('dash');alert('✅ '+n+' - '+method+' saved!');
 }
-function lipamPesa(i){let e=emps[i];let net=Math.round((Number(e.basic)+Number(e.allow))*0.91);if(e.payMethod=='Bank'){alert(`🏦 BANK TRANSFER SIMULATION\n\nJina: ${e.name}\nBank: ${e.bankName}\nAcc: ${e.accNumber}\nKiasi: TZS ${net.toLocaleString()}\n\nHii ni demo - Pesa haijatoka kweli!\nUkiunganisha NMB API - Hapa ndipo itatoka kweli.`)}else{alert(`📱 M-PESA SIMULATION\n\nJina: ${e.name}\nNamba: ${e.phone} (${e.mobileNet})\nKiasi: TZS ${net.toLocaleString()}\n\nHii ni demo - Pesa haijatoka kweli!\nUkibonyeza OK itafungua *150*00#`);window.location.href='tel:*150*00%23'}}
-function exportExcel(){let csv="Jina,Cheo,Msingi,Posho,Jumla,Net,Njia ya Malipo,Maelezo,Bank/Account\n";emps.forEach(e=>{let g=Number(e.basic)+Number(e.allow),n=Math.round(g*0.91),detail=e.payMethod=='Bank'?`${e.bankName} - ${e.accNumber}`:`${e.mobileNet} - ${e.phone}`;csv+=`"${e.name}","${e.pos}",${e.basic},${e.allow},${g},${n},${e.payMethod},"${detail}","${e.accName||''}"\n`});let b=new Blob([csv],{type:'text/csv'});let u=URL.createObjectURL(b);let a=document.createElement('a');a.href=u;a.download=`Haven_Payroll_Bank_Mpesa_${new Date().toISOString().slice(0,10)}.csv`;a.click()}
-function runPayroll(){let t=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);if(!t)return alert('Ongeza wafanyakazi');let banks=emps.filter(e=>e.payMethod=='Bank').length;let mps=emps.filter(e=>e.payMethod=='M-Pesa').length;alert(`✅ PAYROLL SIMULATION SUCCESS!\n\nWafanyakazi: ${emps.length}\nBank: ${banks} | M-Pesa: ${mps}\nJumla: TZS ${t.toLocaleString()}\n\nHii ni DEMO - Hakuna pesa iliyotoka kweli!\nImeandaliwa kwa NMB Bulk File.`)}
+function lipamPesa(i){let e=emps[i];let net=Math.round((Number(e.basic)+Number(e.allow))*0.91);if(e.payMethod=='Bank'){alert(`🏦 BANK SIMULATION\n${e.name}\n${e.bankName} - ${e.accNumber}\nTZS ${net.toLocaleString()}\n\nDEMO - Pesa haijatoka!`)}else{alert(`📱 M-PESA SIMULATION\n${e.name}\n${e.phone}\nTZS ${net.toLocaleString()}\n\nDEMO - Pesa haijatoka!`);window.location.href='tel:*150*00%23'}}
+function exportExcel(){let csv="Jina,Cheo,Msingi,Posho,Jumla,Net,Njia,Maelezo\n";emps.forEach(e=>{let g=Number(e.basic)+Number(e.allow),n=Math.round(g*0.91),d=e.payMethod=='Bank'?`${e.bankName}-${e.accNumber}`:`${e.mobileNet}-${e.phone}`;csv+=`"${e.name}","${e.pos}",${e.basic},${e.allow},${g},${n},${e.payMethod},"${d}"\n`});let b=new Blob([csv],{type:'text/csv'});let u=URL.createObjectURL(b);let a=document.createElement('a');a.href=u;a.download=`Haven_Payroll_${new Date().toISOString().slice(0,10)}.csv`;a.click()}
+function runPayroll(){let t=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);if(!t)return alert('Ongeza wafanyakazi');alert(`✅ SIMULATION SUCCESS!\n${emps.length} staff\nTZS ${t.toLocaleString()}\n\nHakuna pesa iliyotoka - Ni Demo!`)}
 render();
 </script>
 </body></html>
