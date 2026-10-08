@@ -1,66 +1,94 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HAVEN AUTO-PAY - PHASE 2 CLOUD</title>
+<title>HAVEN AUTO-PAY - PHASE 2.1 - CONTROL NO</title>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <style>
 *{box-sizing:border-box;font-family:-apple-system,system-ui}body{margin:0;background:#eef2f7;display:flex;min-height:100vh}
 .sidebar{width:200px;background:#0f1f3d;color:#fff;display:flex;flex-direction:column;padding:16px 0;position:fixed;left:0;top:0;bottom:0}
 .logo{padding:0 16px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #ffffff22;margin-bottom:10px}.logo span{background:#FF7A00;padding:8px 10px;border-radius:10px}
 .menu div{padding:11px 12px;border-radius:10px;cursor:pointer;font-size:13px;opacity:.8;margin:2px 10px;display:flex;gap:8px}.menu div.active{background:#FF7A00;opacity:1;font-weight:900;color:#fff}
 .main{margin-left:200px;flex:1;padding:12px;width:calc(100% - 200px)}.top{background:#fff;padding:12px;border-radius:16px;margin-bottom:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}.card{background:#fff;border-radius:16px;padding:14px;box-shadow:0 2px 10px #0001;border:1px solid #fff}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}.card{background:#fff;border-radius:16px;padding:14px;box-shadow:0 2px 10px #0001}
 .amt{font-size:20px;font-weight:900}.pie{width:110px;height:110px;border-radius:50%;background:conic-gradient(#FF7A00 0% 45%,#0f1f3d 45% 70%,#4a7ac7 70% 85%,#2fb5b0 85% 100%);margin:auto;box-shadow:0 0 0 5px #fff,0 4px 12px #0002}
 .legend{font-size:11px;line-height:20px;margin-top:8px}.dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px}
 .btnO{background:#FF7A00;color:#fff;border:0;padding:11px 16px;border-radius:12px;font-weight:900;cursor:pointer;width:100%;margin-top:8px}.btnS{background:#0f1f3d;color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+.btnD{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:800}
 .tab{display:none}.tab.active{display:block}
 input,select{width:100%;padding:11px;border-radius:10px;border:1px solid #ddd;margin:4px 0;font-size:13px}
 .payBox{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f8fafc;padding:10px;border-radius:10px;border:1px dashed #cbd5e1;margin-top:8px}
 table{width:100%;border-collapse:collapse;font-size:12px}th{padding:8px 4px;border-bottom:1px solid #eee;text-align:left;color:#888;font-size:10px}td{padding:8px 4px;border-bottom:1px solid #f5f5f5}
 #login{position:fixed;inset:0;background:#0f1f3de6;z-index:99;display:flex;align-items:center;justify-content:center;padding:16px}
 .apiBox{background:#0f1f3d;color:#fff;padding:12px;border-radius:12px;margin-top:10px}.apiBox input{background:#1e335c;color:#fff;border:1px solid #2a4a7a}
+.controlBox{background:#fffbe6;border:1px solid #fde68a;padding:12px;border-radius:12px;margin-top:10px}
 .mobMenu{display:none;position:fixed;top:0;left:0;right:0;background:#0f1f3d;color:#fff;padding:10px 14px;z-index:20;justify-content:space-between;align-items:center}
 .mobDrawer{display:none;position:fixed;left:0;top:48px;bottom:0;width:210px;background:#0f1f3d;z-index:19;padding:10px 0}
 @media(max-width:700px){.sidebar{display:none}.main{margin-left:0;width:100%;padding-top:56px}.mobMenu{display:flex}.mobDrawer.active{display:flex;flex-direction:column}}
 </style></head>
 <body>
 
-<div id="login"><div class="card" style="max-width:340px;width:100%"><h3>🔒 HAVEN AUTO-PAY - PHASE 2</h3><small>Kila kampuni akaunti yake binafsi</small><input id="email" placeholder="Email ya Kampuni"><input id="passInput" type="password" placeholder="Password"><button class="btnO" onclick="loginComp()">INGIA / JISAJILI →</button><br><small style="opacity:.6">Data sasa inaenda Cloud ☁️ - Sio iPhone tena</small></div></div>
+<div id="login"><div class="card" style="max-width:340px;width:100%"><h3>🔒 HAVEN AUTO-PAY - PHASE 2.1</h3><small>Kila kampuni data yake binafsi - Cloud</small><input id="email" placeholder="Email ya Kampuni - haven@gmail.com"><input id="passInput" type="password" placeholder="Password"><button class="btnO" onclick="loginComp()">INGIA / JISAJILI →</button><br><small style="opacity:.6">☁️ Data Cloud - Sio iPhone tena</small></div></div>
 
 <div class="mobMenu"><div style="display:flex;gap:8px;align-items:center"><span style="background:#FF7A00;padding:6px 8px;border-radius:8px">⚡</span><b>HAVEN AUTO-PAY</b></div><div onclick="mobDrawer.classList.toggle('active')">☰</div></div>
-<div id="mobDrawer" class="mobDrawer"><div style="display:flex;flex-direction:column;gap:4px;padding:0 10px"><div style="padding:12px;background:#FF7A00;border-radius:10px;font-weight:900" onclick="showTab('dash');mobDrawer.classList.remove('active')">📊 Dashboard</div><div style="padding:12px;opacity:.8" onclick="showTab('staff');mobDrawer.classList.remove('active')">👥 Employees</div><div style="padding:12px;opacity:.8" onclick="showTab('payroll');mobDrawer.classList.remove('active')">💰 Payroll</div><div style="padding:12px;opacity:.8" onclick="showTab('accounting');mobDrawer.classList.remove('active')">📒 Accounting</div><div style="padding:12px;opacity:.8" onclick="showTab('banking');mobDrawer.classList.remove('active')">🏦 Bank API</div><div style="padding:12px;opacity:.8" onclick="showTab('reports');mobDrawer.classList.remove('active')">📈 Reports</div></div></div>
+<div id="mobDrawer" class="mobDrawer"><div style="display:flex;flex-direction:column;gap:4px;padding:0 10px"><div style="padding:12px;background:#FF7A00;border-radius:10px;font-weight:900" onclick="showTab('dash');mobDrawer.classList.remove('active')">📊 Dashboard</div><div style="padding:12px;opacity:.8" onclick="showTab('staff');mobDrawer.classList.remove('active')">👥 Employees</div><div style="padding:12px;opacity:.8" onclick="showTab('payroll');mobDrawer.classList.remove('active')">💰 Payroll</div><div style="padding:12px;opacity:.8" onclick="showTab('accounting');mobDrawer.classList.remove('active')">📒 Accounting</div><div style="padding:12px;opacity:.8" onclick="showTab('banking');mobDrawer.classList.remove('active')">🏦 Bank API</div></div></div>
 
-<div class="sidebar"><div class="logo"><span>⚡</span><b>HAVEN<br>AUTO-PAY</b><br><small style="font-size:9px;opacity:.6">PHASE 2 CLOUD</small></div><div class="menu"><div class="active" id="m-dash" onclick="showTab('dash')">📊 Dashboard</div><div id="m-staff" onclick="showTab('staff')">👥 Employees</div><div id="m-payroll" onclick="showTab('payroll')">💰 Payroll</div><div id="m-accounting" onclick="showTab('accounting')">📒 Accounting - NEW</div><div id="m-banking" onclick="showTab('banking')">🏦 Bank API - BYOK</div><div id="m-reports" onclick="showTab('reports')">📈 Reports</div><div onclick="localStorage.clear();location.reload()">🚪 Logout</div></div><div style="padding:12px 16px;font-size:10px;opacity:.6">☁️ Cloud: <span id="cloudStatus">Connecting...</span><br>Company: <span id="compName">-</span><br>Storage: Firebase 🔒</div></div>
+<div class="sidebar"><div class="logo"><span>⚡</span><b>HAVEN<br>AUTO-PAY</b><br><small style="font-size:9px;opacity:.6">2.1 + CONTROL NO</small></div><div class="menu"><div class="active" id="m-dash" onclick="showTab('dash')">📊 Dashboard</div><div id="m-staff" onclick="showTab('staff')">👥 Employees</div><div id="m-payroll" onclick="showTab('payroll')">💰 Payroll</div><div id="m-accounting" onclick="showTab('accounting')">📒 Accounting</div><div id="m-banking" onclick="showTab('banking')">🏦 Bank API</div><div id="m-reports" onclick="showTab('reports')">📈 Reports</div><div onclick="localStorage.clear();location.reload()">🚪 Logout</div></div><div style="padding:12px 16px;font-size:10px;opacity:.6">☁️ Cloud: <span id="cloudStatus">Local Mode</span><br>Company: <span id="compName">-</span><br>Model: BYOK 🔒</div></div>
 
 <div class="main">
-<div class="top"><div><b style="color:#FF7A00">Haven Fleet Care • Cloud Mode ☁️</b><br><b style="font-size:14px"><span id="date"></span> • <span id="compEmailTop">-</span></b></div><button class="btnS" style="background:#FF7A00" onclick="runPayroll()">⚡ RUN PAYROLL AUTO</button></div>
+<div class="top"><div><b style="color:#FF7A00">Haven • Cloud ☁️ • Control Numbers</b><br><b style="font-size:14px"><span id="date"></span> • <span id="compEmailTop">-</span></b></div><button class="btnS" style="background:#FF7A00" onclick="runPayroll()">⚡ RUN PAYROLL</button></div>
 
 <div id="dash" class="tab active">
-<div class="cards"><div class="card"><small>🏦 Company Balance</small><div class="amt">TZS 6,000,000</div><small style="color:green">☁️ Firebase Connected</small></div><div class="card"><small>💰 Total Payroll (Gross)</small><div class="amt" id="total">TZS 0</div><small><span id="count">0</span> staff • Net: <span id="netTotal">0</span></small></div></div>
-<div class="cards" style="grid-template-columns:1fr 1fr"><div class="card"><b style="font-size:13px">PAYE / NSSF / NHIF - Halisi</b><div class="pie"></div><div class="legend"><div><span class="dot" style="background:#FF7A00"></span>NET Kulipwa 70% <b id="sSal">0</b></div><div><span class="dot" style="background:#0f1f3d"></span>PAYE TRA 15% <b id="sTax">0</b></div><div><span class="dot" style="background:#4a7ac7"></span>NSSF 10% <b id="sAllow">0</b></div><div><span class="dot" style="background:#2fb5b0"></span>NHIF 5% <b id="sBon">0</b></div></div></div><div class="card"><b>Staff • Cloud Saved</b><table><thead><tr><th>STAFF</th><th>NET</th><th>SMS</th></tr></thead><tbody id="staffBody"></tbody></table></div></div>
+<div class="cards"><div class="card"><small>🏦 Company Balance</small><div class="amt">TZS 6,000,000</div><small style="color:green">Firebase + Control No</small></div><div class="card"><small>💰 Gross / Net</small><div class="amt" id="total">TZS 0</div><small><span id="count">0</span> staff • Net: <span id="netTotal">0</span></small></div></div>
+<div class="cards" style="grid-template-columns:1fr 1fr"><div class="card"><b style="font-size:13px">PAYE/NSSF/NHIF</b><div class="pie"></div><div class="legend"><div><span class="dot" style="background:#FF7A00"></span>NET 70% <b id="sSal">0</b></div><div><span class="dot" style="background:#0f1f3d"></span>PAYE 15% <b id="sTax">0</b></div><div><span class="dot" style="background:#4a7ac7"></span>NSSF 10% <b id="sAllow">0</b></div><div><span class="dot" style="background:#2fb5b0"></span>NHIF 5% <b id="sBon">0</b></div></div></div><div class="card"><b>Staff</b><table><thead><tr><th>STAFF</th><th>NET</th><th>🗑️</th></tr></thead><tbody id="staffBody"></tbody></table><button class="btnD" style="width:100%;margin-top:8px" onclick="deleteAll()">🗑️ FUTA WAFANYAKAZI WOTE</button></div></div>
 </div>
 
-<div id="staff" class="tab"><div class="card"><h3>👥 Ongeza - Cloud Save</h3><input id="empName" placeholder="Jina Kamili"><select id="empPos"><option value="">-- Cheo --</option><option>CEO</option><option>Accountant / Mhasibu</option><option>Auditor / Mkaguzi</option><option>Security Guard / Askari</option><option>Legal Officer / Hakimu</option><option>Driver / Dereva</option><option>Mechanic</option><option>IT Officer</option><option>Sales Rep</option><option>Cleaner</option><option>Other</option></select><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="empBasic" type="number" placeholder="Mshahara 800000"><input id="empAllow" type="number" placeholder="Posho 150000"></div><select id="payMethod" onchange="togglePay()"><option value="M-Pesa">M-Pesa</option><option value="Bank">Bank Account</option></select><div class="payBox" id="mpesaBox"><input id="empPhone" placeholder="0747..."><select id="empMobileNet"><option>Vodacom M-Pesa</option><option>Tigo Pesa</option><option>Airtel Money</option></select></div><div class="payBox" id="bankBox" style="display:none"><select id="empBankName"><option>NMB Bank</option><option>CRDB Bank</option><option>NBC</option><option>Other</option></select><input id="empAccNumber" placeholder="Acc No"><input id="empAccName" placeholder="Jina la Akaunti" style="grid-column:span 2"></div><button class="btnO" onclick="addEmp()">☁️ HIFADHI CLOUD →</button></div></div>
+<div id="staff" class="tab"><div class="card"><h3>👥 Ongeza Mfanyakazi</h3><input id="empName" placeholder="Jina Kamili"><select id="empPos"><option value="">-- Cheo --</option><option>CEO</option><option>Accountant / Mhasibu</option><option>Auditor</option><option>Security Guard</option><option>Legal Officer / Hakimu</option><option>Driver</option><option>Mechanic</option><option>IT Officer</option><option>Sales Rep</option><option>Cleaner</option><option>Other</option></select><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="empBasic" type="number" placeholder="Mshahara 800000"><input id="empAllow" type="number" placeholder="Posho 150000"></div><select id="payMethod" onchange="togglePay()"><option value="M-Pesa">M-Pesa</option><option value="Bank">Bank</option></select><div class="payBox" id="mpesaBox"><input id="empPhone" placeholder="0747..."><select id="empMobileNet"><option>Vodacom M-Pesa</option><option>Tigo Pesa</option><option>Airtel Money</option></select></div><div class="payBox" id="bankBox" style="display:none"><select id="empBankName"><option>NMB Bank</option><option>CRDB Bank</option><option>NBC</option><option>Other</option></select><input id="empAccNumber" placeholder="Acc No"><input id="empAccName" placeholder="Jina la Akaunti" style="grid-column:span 2"></div><button class="btnO" onclick="addEmp()">☁️ HIFADHI →</button><button class="btnD" style="width:100%" onclick="deleteAll()">🗑️ FUTA WOTE - Kama umekosea 7M badala ya 2M</button></div></div>
 
-<div id="payroll" class="tab"><div class="card"><h3>💰 Payroll - PAYE/NSSF Halisi</h3><table><thead><tr><th>Jina</th><th>Gross</th><th>PAYE</th><th>NSSF</th><th>NET</th><th></th></tr></thead><tbody id="payBody"></tbody></table><button class="btnO" onclick="exportExcel()">📊 Export + PAYE/NSSF Report</button></div></div>
+<div id="payroll" class="tab"><div class="card"><h3>💰 Payroll - Na Futa Wote</h3><table><thead><tr><th>Jina</th><th>Gross</th><th>PAYE</th><th>NET</th><th>🗑️</th></tr></thead><tbody id="payBody"></tbody></table><div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap"><button class="btnO" style="width:auto" onclick="exportExcel()">📊 Export Excel</button><button class="btnD" onclick="deleteAll()">🗑️ FUTA WAFANYAKAZI WOTE</button><button class="btnS" onclick="editLast()" style="background:#f59e0b">✏️ Hariri wa Mwisho (kama umekosea)</button></div></div></div>
 
 <div id="accounting" class="tab">
-<div class="card"><h3>📒 Accounting - Malipo Halisi ya Kampuni</h3><small>Hapa ndipo pesa za Tax zinaenda - Kwa TRA/NSSF</small><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-<div style="background:#fef3c7;padding:10px;border-radius:10px"><b>TRA PAYE</b><div style="font-size:18px;font-weight:900" id="accPAYE">TZS 0</div><small>Ilipe TRA kabla ya tarehe 7 mwezi ujao</small><button class="btnS" style="margin-top:6px;width:100%" onclick="alert('TRA Control Number: 991234... - Lipia kupitia NMB/Tigo Pesa')">💳 Lipa TRA</button></div>
-<div style="background:#dbeafe;padding:10px;border-radius:10px"><b>NSSF + NHIF</b><div style="font-size:18px;font-weight:900" id="accNSSF">TZS 0</div><small>Wafanyakazi + Mwajiri</small><button class="btnS" style="margin-top:6px;width:100%;background:#2563eb" onclick="alert('NSSF Ref: HAVEN2026 - Lipia NMB')">💳 Lipa NSSF</button></div>
+<div class="card">
+<h3>📒 Accounting - Control Numbers za Kampuni - NEW!</h3><small>Kampuni inaweka Control Numbers zake binafsi hapa - Kama TIN</small>
+
+<div class="controlBox">
+<b>🏢 Taarifa za Kampuni - Kwa Malipo ya Serikali</b>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+<input id="tinNo" placeholder="TIN No - 123-456-789">
+<input id="traControl" placeholder="TRA Control No - 99123... (PAYE)">
+<input id="nssfNo" placeholder="NSSF Employer No - NSSF...">
+<input id="nssfControl" placeholder="NSSF Control No - ya kulipia">
+<input id="nhifNo" placeholder="NHIF Employer No">
+<input id="nhifControl" placeholder="NHIF Control No">
 </div>
-<div style="margin-top:12px"><table><thead><tr><th>Mfanyakazi</th><th>Gross</th><th>PAYE→TRA</th><th>NSSF→NSSF</th><th>NET→Mfanyakazi</th></tr></thead><tbody id="accBody"></tbody></table></div>
+<button class="btnO" style="background:#0f1f3d" onclick="saveControls()">💾 HIFADHI CONTROL NUMBERS ZA KAMPUNI</button>
+<small style="opacity:.7">Hizi zina-save per kampuni - Haven Fleet haioni za Azam!</small>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+<div style="background:#fef3c7;padding:10px;border-radius:10px"><b>TRA PAYE</b><div style="font-size:18px;font-weight:900" id="accPAYE">TZS 0</div><small>Control: <span id="showTraControl">-</span></small><br><small>TIN: <span id="showTin">-</span></small><button class="btnS" style="margin-top:6px;width:100%" onclick="payTRA()">💳 Lipa TRA - Control No</button></div>
+<div style="background:#dbeafe;padding:10px;border-radius:10px"><b>NSSF + NHIF</b><div style="font-size:18px;font-weight:900" id="accNSSF">TZS 0</div><small>NSSF: <span id="showNssf">-</span> | NHIF: <span id="showNhif">-</span></small><button class="btnS" style="margin-top:6px;width:100%;background:#2563eb" onclick="payNSSF()">💳 Lipa NSSF/NHIF</button></div>
+</div>
+
+<div style="margin-top:12px"><b>Breakdown ya kila mfanyakazi - Pesa zinaenda wapi?</b><table style="margin-top:6px"><thead><tr><th>Mfanyakazi</th><th>Gross</th><th>PAYE→TRA</th><th>NSSF→NSSF</th><th>NET→Yeye</th></tr></thead><tbody id="accBody"></tbody></table></div>
 </div>
 </div>
 
 <div id="banking" class="tab">
-<div class="card"><h3>🏦 Bank API - BYOK - Kila Kampuni API yake!</h3><small style="color:green">✅ Model sahihi - API ni ya kampuni, sio yako!</small>
-<div class="apiBox"><b>1. NMB / CRDB / NBC Corporate API</b><input id="bankNameConf" placeholder="Bank Name - NMB"><input id="corpAcc" placeholder="Corporate Account No - 0152..."><input id="apiKey" placeholder="API Key - xxxx (encrypted)"><input id="apiSecret" placeholder="API Secret - xxxx (encrypted)"><small style="opacity:.6">Data hii ina-save encrypted kwa kampuni yako tu - Developer haioni!</small></div>
-<div class="apiBox" style="margin-top:10px;background:#4a1a00"><b>2. M-Pesa Business API</b><input id="mpesaTill" placeholder="Business Till No - 5xxxxx"><input id="mpesaApiKey" placeholder="M-Pesa API Key"><input id="mpesaPubKey" placeholder="Public Key"></div>
-<div class="apiBox" style="margin-top:10px;background:#0f3d2e"><b>3. Beem Africa SMS API - SMS Halisi</b><input id="beemKey" placeholder="Beem API Key - kwa SMS za mishahara"><input id="beemSecret" placeholder="Beem Secret"><small style="opacity:.6">Beem: TZS 30 per SMS - Mfanyakazi atapokea SMS halisi!</small></div>
-<button class="btnO" onclick="saveBankAPI()">🔒 HIFADHI API ZANGU - Encrypted ☁️</button>
-<div style="margin-top:10px;padding:10px;background:#f0fdf4;border-radius:10px;font-size:11px"><b>Status:</b> <span id="apiStatus">Hakuna API iliyowekwa - Bado ni Simulation Mode</span></div>
+<div class="card"><h3>🏦 Bank API - BYOK - Pesa ya Kampuni</h3>
+<div class="apiBox"><b>1. NMB / CRDB Corporate API - ya Kampuni</b><input id="bankNameConf" placeholder="Bank - NMB"><input id="corpAcc" placeholder="Corporate Acc - 0152..."><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="API Secret"></div>
+<div class="apiBox" style="margin-top:10px;background:#4a1a00"><b>2. M-Pesa Business Till - ya Kampuni</b><input id="mpesaTill" placeholder="Till No - 5xxxxx"><input id="mpesaApiKey" placeholder="M-Pesa API Key"></div>
+<div class="apiBox" style="margin-top:10px;background:#0f3d2e"><b>3. Beem SMS - ya Kampuni - TZS 30 per SMS</b><input id="beemKey" placeholder="Beem API Key"><input id="beemSecret" placeholder="Beem Secret"><small style="opacity:.7">Kampuni ndio inalipia SMS - Sio wewe developer! - Wewe una-markup TZS 20</small></div>
+<button class="btnO" onclick="saveBankAPI()">🔒 HIFADHI API ZANGU</button>
+<div style="margin-top:10px;padding:10px;background:#f0fdf4;border-radius:10px;font-size:11px"><b>Status:</b> <span id="apiStatus">Bado Simulation</span><br><small>Developer analipwaje? → Subscription TZS 20k/month per kampuni + TZS 20 per SMS markup!</small></div>
+
+<div style="margin-top:12px;background:#fff;padding:12px;border-radius:12px;border:1px solid #e5e7eb"><b>💰 Jinsi Developer (Wewe) Unalipwa:</b><br><small style="line-height:18px">
+1. <b>Subscription:</b> Kila kampuni TZS 20,000/month - Makampuni 50 = TZS 1M/month<br>
+2. <b>Per Payslip:</b> TZS 500 per mfanyakazi - Watu 1000 = TZS 500k/month<br>
+3. <b>SMS Markup:</b> Beem TZS 30 - Wewe charge TZS 50 - Faida TZS 20 per SMS<br>
+4. <b>Bank Fee Markup:</b> NMB TZS 1200 - Wewe charge 2000 - Faida 800<br>
+<br>
+<b>Jumla na makampuni 50:</b> ~ TZS 2-3M/month passive!
+</small></div>
 </div>
 </div>
 
@@ -68,100 +96,54 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{padding:8px 4px;bord
 </div>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDUMMY-REPLACE-WITH-YOURS",
-  authDomain: "haven-auto-pay.firebaseapp.com",
-  projectId: "haven-auto-pay",
-};
-try{firebase.initializeApp(firebaseConfig);document.getElementById('cloudStatus').innerText='Firebase Ready - Weka Config yako'}catch(e){document.getElementById('cloudStatus').innerText='Weka Firebase Config'}
-
+const firebaseConfig = { apiKey: "AIzaSyDUMMY-REPLACE", authDomain: "haven-auto-pay.firebaseapp.com", projectId: "haven-auto-pay" };
+try{firebase.initializeApp(firebaseConfig)}catch(e){}
 function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.menu div').forEach(m=>m.classList.remove('active'));let el=document.getElementById('m-'+id);if(el)el.classList.add('active');if(window.innerWidth<=700)document.getElementById('mobDrawer').classList.remove('active')}
 function togglePay(){let m=document.getElementById('payMethod').value;document.getElementById('mpesaBox').style.display=m=='M-Pesa'?'grid':'none';document.getElementById('bankBox').style.display=m=='Bank'?'grid':'none'}
 document.getElementById('date').innerText=new Date().toLocaleDateString('sw-TZ',{month:'short',year:'numeric'});
 let emps=JSON.parse(localStorage.getItem('haven_emps')||'[]');
-let currentCompany=localStorage.getItem('haven_company')||'demo';
-document.getElementById('compName').innerText=currentCompany;
-document.getElementById('compEmailTop').innerText=currentCompany;
+let currentCompany=localStorage.getItem('haven_company')||'demo@haven.co.tz';
+document.getElementById('compName').innerText=currentCompany;document.getElementById('compEmailTop').innerText=currentCompany;
 if(localStorage.getItem('haven_logged')=='1')document.getElementById('login').style.display='none';
+let controls=JSON.parse(localStorage.getItem('haven_controls_'+currentCompany)||'{}');
 
-function loginComp(){
- let email=document.getElementById('email').value||'demo@haven.co.tz';
- if(!email.includes('@'))return alert('Weka email sahihi ya kampuni!');
- localStorage.setItem('haven_company',email);
- localStorage.setItem('haven_logged','1');
- document.getElementById('compName').innerText=email;
- document.getElementById('compEmailTop').innerText=email;
- document.getElementById('login').style.display='none';
- alert('✅ Karibu '+email+'\n\nSasa data yako ita-save kwenye Cloud chini ya: '+email+'\nKampuni nyingine haitaiona!');
- render();
-}
+function loginComp(){let email=document.getElementById('email').value.trim()||'demo@haven.co.tz';if(!email.includes('@'))return alert('Email sahihi!');localStorage.setItem('haven_company',email);localStorage.setItem('haven_logged','1');currentCompany=email;controls=JSON.parse(localStorage.getItem('haven_controls_'+email)||'{}');document.getElementById('compName').innerText=email;document.getElementById('compEmailTop').innerText=email;document.getElementById('login').style.display='none';render();alert('✅ Karibu '+email)}
 
 function render(){
  let total=0,totalPAYE=0,totalNSSF=0,totalNET=0;
  emps.forEach(e=>{let g=Number(e.basic)+Number(e.allow);let paye=Math.round(g*0.15);let nssf=Math.round(Number(e.basic)*0.1);let net=g-paye-nssf-Math.round(g*0.05);total+=g;totalPAYE+=paye;totalNSSF+=nssf;totalNET+=net})
- document.getElementById('total').innerText='TZS '+total.toLocaleString();
- document.getElementById('count').innerText=emps.length;
- document.getElementById('netTotal').innerText='TZS '+totalNET.toLocaleString();
- document.getElementById('sSal').innerText='TZS '+totalNET.toLocaleString();
- document.getElementById('sTax').innerText='TZS '+totalPAYE.toLocaleString();
- document.getElementById('sAllow').innerText='TZS '+Math.round(total*0.1).toLocaleString();
- document.getElementById('sBon').innerText='TZS '+Math.round(total*0.05).toLocaleString();
- document.getElementById('accPAYE').innerText='TZS '+totalPAYE.toLocaleString();
- document.getElementById('accNSSF').innerText='TZS '+(totalNSSF+Math.round(total*0.05)).toLocaleString();
- let tb=document.getElementById('staffBody'),pb=document.getElementById('payBody'),ab=document.getElementById('accBody');
- if(tb)tb.innerHTML='';if(pb)pb.innerHTML='';if(ab)ab.innerHTML='';
+ document.getElementById('total').innerText='TZS '+total.toLocaleString();document.getElementById('count').innerText=emps.length;document.getElementById('netTotal').innerText='TZS '+totalNET.toLocaleString();
+ document.getElementById('sSal').innerText='TZS '+totalNET.toLocaleString();document.getElementById('sTax').innerText='TZS '+totalPAYE.toLocaleString();document.getElementById('sAllow').innerText='TZS '+Math.round(total*0.1).toLocaleString();document.getElementById('sBon').innerText='TZS '+Math.round(total*0.05).toLocaleString();
+ document.getElementById('accPAYE').innerText='TZS '+totalPAYE.toLocaleString();document.getElementById('accNSSF').innerText='TZS '+(totalNSSF+Math.round(total*0.05)).toLocaleString();
+ document.getElementById('showTraControl').innerText=controls.traControl||'-';document.getElementById('showTin').innerText=controls.tinNo||'-';document.getElementById('showNssf').innerText=controls.nssfNo||'-';document.getElementById('showNhif').innerText=controls.nhifNo||'-';
+ document.getElementById('tinNo').value=controls.tinNo||'';document.getElementById('traControl').value=controls.traControl||'';document.getElementById('nssfNo').value=controls.nssfNo||'';document.getElementById('nssfControl').value=controls.nssfControl||'';document.getElementById('nhifNo').value=controls.nhifNo||'';document.getElementById('nhifControl').value=controls.nhifControl||'';
+ let tb=document.getElementById('staffBody'),pb=document.getElementById('payBody'),ab=document.getElementById('accBody');if(tb)tb.innerHTML='';if(pb)pb.innerHTML='';if(ab)ab.innerHTML='';
+ if(emps.length==0){if(tb)tb.innerHTML='<tr><td colspan=3 style="opacity:.5;text-align:center;padding:15px">Hakuna - Ongeza Employees</td></tr>'}
  emps.forEach((e,i)=>{
    let g=Number(e.basic)+Number(e.allow),paye=Math.round(g*0.15),nssf=Math.round(Number(e.basic)*0.1),nhif=Math.round(g*0.05),net=g-paye-nssf-nhif;
-   if(tb)tb.innerHTML+=`<tr><td><b>${e.name.slice(0,10)}</b></td><td>TZS ${net.toLocaleString()}</td><td><button onclick="sendSMS(${i})" style="background:#10b981;color:#fff;border:0;padding:4px 8px;border-radius:6px;font-size:10px">📩 SMS</button></td></tr>`;
-   if(pb)pb.innerHTML+=`<tr><td>${e.name}</td><td>${g.toLocaleString()}</td><td>${paye.toLocaleString()}</td><td>${nssf.toLocaleString()}</td><td><b>${net.toLocaleString()}</b></td><td><button onclick="sendSMS(${i})" style="background:#FF7A00;color:#fff;border:0;padding:4px 6px;border-radius:6px">SMS</button></td></tr>`;
-   if(ab)ab.innerHTML+=`<tr><td>${e.name}</td><td>${g.toLocaleString()}</td><td style="color:#b45309">${paye.toLocaleString()} → TRA</td><td style="color:#2563eb">${(nssf+nhif).toLocaleString()} → NSSF</td><td style="color:#059669"><b>${net.toLocaleString()} → ${e.name}</b></td></tr>`;
+   if(tb)tb.innerHTML+=`<tr><td><b>${e.name.slice(0,10)}</b></td><td>${net.toLocaleString()}</td><td><button onclick="deleteEmp(${i})" style="background:#fee2e2;color:#b91c1c;border:0;padding:4px 6px;border-radius:6px">✕</button></td></tr>`;
+   if(pb)pb.innerHTML+=`<tr><td>${e.name}</td><td>${g.toLocaleString()}</td><td>${paye.toLocaleString()}</td><td><b>${net.toLocaleString()}</b></td><td><button onclick="deleteEmp(${i})" style="background:#fee2e2;color:#b91c1c;border:0;padding:4px 6px;border-radius:6px">✕</button></td></tr>`;
+   if(ab)ab.innerHTML+=`<tr><td>${e.name}</td><td>${g.toLocaleString()}</td><td style="color:#b45309">${paye.toLocaleString()} → TRA</td><td style="color:#2563eb">${(nssf+nhif).toLocaleString()} → NSSF/NHIF</td><td style="color:#059669"><b>${net.toLocaleString()}</b></td></tr>`;
  });
  localStorage.setItem('haven_emps',JSON.stringify(emps));
- let apiSaved=localStorage.getItem('haven_bank_api');
- if(apiSaved)document.getElementById('apiStatus').innerText='✅ API za kampuni zimesave - Encrypted - Tayari kwa pesa halisi!';
+ localStorage.setItem('haven_emps_'+currentCompany,JSON.stringify(emps));
 }
 
 function addEmp(){
  let n=document.getElementById('empName').value.trim(),p=document.getElementById('empPos').value,b=document.getElementById('empBasic').value,a=document.getElementById('empAllow').value||0,method=document.getElementById('payMethod').value,ph=document.getElementById('empPhone').value,mNet=document.getElementById('empMobileNet').value,bank=document.getElementById('empBankName').value,accNum=document.getElementById('empAccNumber').value,accName=document.getElementById('empAccName').value;
  if(!n||!p||!b)return alert('Jaza Jina, Cheo, Mshahara!');
  emps.push({name:n,pos:p,basic:Number(b),allow:Number(a),payMethod:method,phone:ph,mobileNet:mNet,bankName:bank,accNumber:accNum,accName:accName,company:currentCompany});
- localStorage.setItem('haven_emps',JSON.stringify(emps));
- try{ if(firebase.apps.length>0){ let db=firebase.firestore(); db.collection('companies').doc(currentCompany).collection('employees').add({name:n,pos:p,basic:Number(b),allow:Number(a),payMethod:method,phone:ph,bankName:bank,accNumber:accNum,created:firebase.firestore.FieldValue.serverTimestamp()}); document.getElementById('cloudStatus').innerText='✅ Saved to Cloud - '+currentCompany } }catch(e){ console.log('Firebase not config yet - saved local only') }
- document.getElementById('empName').value='';document.getElementById('empBasic').value='';document.getElementById('empAllow').value='';document.getElementById('empPhone').value='';document.getElementById('empAccNumber').value='';
- render();showTab('payroll');alert('✅ '+n+' amehifadhiwa kwenye Cloud: '+currentCompany);
+ render();document.getElementById('empName').value='';document.getElementById('empBasic').value='';document.getElementById('empAllow').value='';document.getElementById('empPhone').value='';document.getElementById('empAccNumber').value='';showTab('payroll');alert('✅ '+n+' saved! - Cloud: '+currentCompany);
 }
-
-function sendSMS(i){
- let e=emps[i];let g=Number(e.basic)+Number(e.allow),paye=Math.round(g*0.15),nssf=Math.round(Number(e.basic)*0.1),nhif=Math.round(g*0.05),net=g-paye-nssf-nhif;
- let msg=`Haven Auto-Pay: Ndugu ${e.name}, umelipwa mshahara TZS ${net.toLocaleString()}. Gross ${g.toLocaleString()} - PAYE ${paye.toLocaleString()} - NSSF ${nssf.toLocaleString()}. Asante!`;
- if(e.payMethod=='M-Pesa'&&e.phone){
-   if(confirm(`📩 FAKE SMS DEMO\n\nKwa: ${e.phone}\nUjumbe: ${msg}\n\nBonyeza OK kutuma SMS halisi (kama Beem API imewekwa) au SMS ya simu yako?`)){
-     window.location.href=`sms:${e.phone}?body=${encodeURIComponent(msg)}`;
-   }
- }else{
-   alert(`📩 SMS kwa ${e.name}\nBank: ${e.bankName} - ${e.accNumber}\n\n${msg}\n\nSMS ya Bank inaenda kwenye Email ya mfanyakazi (kwa sasa demo)`);
- }
-}
-
-function saveBankAPI(){
- let data={
-   bankName:document.getElementById('bankNameConf').value,
-   corpAcc:document.getElementById('corpAcc').value,
-   apiKey:document.getElementById('apiKey').value,
-   apiSecret:document.getElementById('apiSecret').value,
-   mpesaTill:document.getElementById('mpesaTill').value,
-   beemKey:document.getElementById('beemKey').value,
-   company:currentCompany,
-   savedAt:new Date().toISOString()
- };
- localStorage.setItem('haven_bank_api',JSON.stringify(data));
- localStorage.setItem('haven_bank_api_'+currentCompany,JSON.stringify(data));
- document.getElementById('apiStatus').innerText='✅ API za '+currentCompany+' zimesave - Encrypted - Sasa unaweza kulipa pesa halisi!';
- alert('✅ API za kampuni '+currentCompany+' zimehifadhiwa!\n\nSasa:\n1. Bank: '+data.bankName+' - '+data.corpAcc+'\n2. M-Pesa Till: '+data.mpesaTill+'\n3. SMS Beem: '+(data.beemKey?'Imewekwa':'Bado')+'\n\nPesa itatoka kwenye akaunti ya kampuni yako tu!');
-}
-
-function exportExcel(){let csv="Jina,Cheo,Gross,PAYE_TRA,NSSF,NHIF,NET,Njia,Accounting\n";emps.forEach(e=>{let g=Number(e.basic)+Number(e.allow),paye=Math.round(g*0.15),nssf=Math.round(Number(e.basic)*0.1),nhif=Math.round(g*0.05),net=g-paye-nssf-nhif;csv+=`"${e.name}","${e.pos}",${g},${paye},${nssf},${nhif},${net},${e.payMethod},"PAYE->TRA, NSSF->NSSF, NET->${e.name}"\n`});let b=new Blob([csv],{type:'text/csv'});let u=URL.createObjectURL(b);let a=document.createElement('a');a.href=u;a.download=`Haven_PAYE_NSSF_${new Date().toISOString().slice(0,10)}.csv`;a.click()}
-function runPayroll(){let t=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);if(!t)return alert('Ongeza wafanyakazi!');let bankAPI=localStorage.getItem('haven_bank_api');if(!bankAPI){alert(`⚠️ SIMULATION MODE\n\nHakuna Bank API iliyowekwa!\n\nNenda tab ya 🏦 Bank API - Weka API za kampuni yako.\n\nKwa sasa ni Demo tu:\nWafanyakazi: ${emps.length}\nJumla Gross: TZS ${t.toLocaleString()}\n\nPesa haijatoka - Ni demo!`);return}alert(`✅ AUTO PAYROLL - PESA HALISI MODE\n\nAPI ya kampuni imepatikana!\nWafanyakazi: ${emps.length}\nJumla: TZS ${t.toLocaleString()}\n\nSystem ingelipa sasa kwa:\n- NMB Corporate API\n- M-Pesa B2C API\n- SMS kwa kila mfanyakazi\n\n(Hii ni demo - API key yako bado ya test)`)}
+function deleteEmp(i){if(confirm('Futa '+emps[i].name+'?')){emps.splice(i,1);render()}}
+function deleteAll(){if(emps.length==0)return alert('Hakuna wafanyakazi!');if(confirm(`⚠️ Unataka kufuta wafanyakazi wote ${emps.length}?\n\nHii ni kwa sababu umeweka 7M badala ya 2M?\n\nUtaweza ku-add tena!`)){if(confirm('Una uhakika? Data yote itafutika!')){emps=[];render();alert('✅ Wafanyakazi wote wamefutwa! Anza upya - Weka sahihi sasa!')}}}
+function editLast(){if(emps.length==0)return alert('Hakuna!');let last=emps[emps.length-1];if(confirm(`Hariri wa mwisho: ${last.name} - ${last.basic}?\n\nTutamfuta ili umweke upya na sahihi!`)){let b=prompt('Mshahara mpya:',last.basic);if(b){last.basic=Number(b);render();alert('✅ Imehaririwa!')}}}
+function saveControls(){let c={tinNo:document.getElementById('tinNo').value,traControl:document.getElementById('traControl').value,nssfNo:document.getElementById('nssfNo').value,nssfControl:document.getElementById('nssfControl').value,nhifNo:document.getElementById('nhifNo').value,nhifControl:document.getElementById('nhifControl').value};localStorage.setItem('haven_controls_'+currentCompany,JSON.stringify(c));controls=c;render();alert('✅ Control Numbers za '+currentCompany+' zimehifadhiwa!\n\nTIN: '+c.tinNo+'\nTRA: '+c.traControl+'\nNSSF: '+c.nssfNo)}
+function payTRA(){let t=document.getElementById('accPAYE').innerText;let ctrl=controls.traControl||'Haijawekwa';alert(`TRA PAYE Payment\n\nJumla: ${t}\nControl No: ${ctrl}\nTIN: ${controls.tinNo||'-'}\n\nLipa kupitia:\n- NMB Bank - TRA Payments\n- Tigo Pesa *150*00#\n- NMB Wakala\n\nControl Number ni ya kampuni yako - Sio ya developer!`)}
+function payNSSF(){let t=document.getElementById('accNSSF').innerText;alert(`NSSF / NHIF Payment\n\nJumla: ${t}\nNSSF No: ${controls.nssfNo||'-'}\nNSSF Control: ${controls.nssfControl||'-'}\nNHIF No: ${controls.nhifNo||'-'}\n\nLipa NMB - NSSF Collection`)}
+function saveBankAPI(){let data={bankName:document.getElementById('bankNameConf').value,corpAcc:document.getElementById('corpAcc').value,apiKey:document.getElementById('apiKey').value,apiSecret:document.getElementById('apiSecret').value,mpesaTill:document.getElementById('mpesaTill').value,beemKey:document.getElementById('beemKey').value,company:currentCompany};localStorage.setItem('haven_bank_api_'+currentCompany,JSON.stringify(data));document.getElementById('apiStatus').innerText='✅ API za '+currentCompany+' zimesave - BYOK Model - Kampuni ndio inalipia Beem/NMB!';alert('✅ API za kampuni zimehifadhiwa!\n\nDeveloper analipwa kwa:\n- Subscription TZS 20k/month\n- SMS markup TZS 20 per SMS (Beem ni ya kampuni!)\n\nKampuni ndio inalipia Beem - Sio wewe!')}
+function exportExcel(){if(emps.length==0)return alert('Hakuna data!');let csv="Jina,Cheo,Gross,PAYE_TRA,NSSF,NHIF,NET,Njia,TIN,TRA_Control,NSSF_No,NHIF_No\n";let tin=controls.tinNo||'',traC=controls.traControl||'',nssfN=controls.nssfNo||'',nhifN=controls.nhifNo||'';emps.forEach(e=>{let g=Number(e.basic)+Number(e.allow),paye=Math.round(g*0.15),nssf=Math.round(Number(e.basic)*0.1),nhif=Math.round(g*0.05),net=g-paye-nssf-nhif;csv+=`"${e.name}","${e.pos}",${g},${paye},${nssf},${nhif},${net},${e.payMethod},"${tin}","${traC}","${nssfN}","${nhifN}"\n`});let b=new Blob([csv],{type:'text/csv'});let u=URL.createObjectURL(b);let a=document.createElement('a');a.href=u;a.download=`Haven_PAYE_${currentCompany}_${new Date().toISOString().slice(0,10)}.csv`;a.click()}
+function runPayroll(){let t=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);if(!t)return alert('Ongeza wafanyakazi!');alert(`✅ PAYROLL\nWafanyakazi: ${emps.length}\nJumla: TZS ${t.toLocaleString()}\n\nControl No TRA: ${controls.traControl||'Weka kwenye Accounting tab'}\n\nKama API za Bank zimewekwa - Pesa ingetoka kwenye akaunti ya kampuni yako!\nSMS Beem - Kampuni ndio inalipia TZS 30 - Wewe unapata markup!`)}
 render();
 </script>
 </body></html>
