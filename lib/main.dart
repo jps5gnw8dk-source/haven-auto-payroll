@@ -44,7 +44,7 @@ class _DashboardState extends State<Dashboard> {
       appBar: AppBar(title: Text('HAVEN AUTO PAYROLL - 40%', style: TextStyle(color: Color(0xFFD4AF37))), backgroundColor: Color(0xFF0A1931)),
       body: ListView(padding: EdgeInsets.all(16), children: [
         Card(child: ListTile(title: Text('Mapato ya Mwezi'), subtitle: Text('$revenue TZS'))),
-        Card(color: Color(0xFFFFF3E0), child: ListTile(title: Text('Fixed Costs'), subtitle: Text('Jengo 300k+Umeme 150k+TRA 200k+Server 150k+Msufini+NSSF 20%+WCF 1%+SDL 4%+VAT 18% = 2.5M'))),
+        Card(color: Color(0xFFFFF3E0), child: ListTile(title: Text('Fixed Costs'), subtitle: Text('Jengo 300k+Umeme 150k+TRA 200k+Server 150k+Msufini+NSSF 20%+WCF 1%+SDL 3.5%+VAT 18% = 2.5M'))),
         Card(color: Color(0xFFE3F2FD), child: ListTile(title: Text('Jumla % Mishahara'), subtitle: Text('$totalPercent% ya $revenue = ${revenue*totalPercent/100} TZS - Max 40% = ${revenue*0.4}'))),
         Slider(value: totalPercent, min: 10, max: 60, divisions: 10, label: '$totalPercent%', onChanged: (v){setState((){totalPercent=v;});}),
         ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: Colors.green), onPressed: runPayroll, child: Text('RUN PAYROLL - Check 40%', style: TextStyle(color: Colors.white))),
