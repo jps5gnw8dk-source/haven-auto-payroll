@@ -48,14 +48,14 @@ table{width:100%;border-collapse:collapse;font-size:10px}th{padding:6px 3px;bord
 <div id="m-reports" onclick="showTab('reports')">📈 Reports</div>
 <div id="m-settings" onclick="showTab('settings')">⚙️ Settings</div>
 <div id="m-logout" onclick="showTab('logout')">🚪 Logout / Login</div>
-</div><div style="padding:12px 16px;font-size:9px;opacity:.6">Company: <span id="compName">-</span><br>Sheet: Interworld Model<br>WCF 0.5% + SDL 4% + Pension 10%</div></div>
+</div><div style="padding:12px 16px;font-size:9px;opacity:.6">Company: <span id="compName">-</span><br>Sheet: Interworld Model<br>WCF 0.5% + SDL 3.5% + Pension 10%</div></div>
 
 <div class="main">
 <div class="top"><div><b style="color:#FF7A00"> Model • WCF/SDL/Pension Employer</b><br><b style="font-size:12px"><span id="date"></span> • <span id="compEmailTop">-</span></b></div><button class="btnS" style="background:#FF7A00" onclick="runPayroll()">⚡ RUN PAYROLL</button></div>
 
 <div id="dash" class="tab active">
 <div class="cards"><div class="card"><small>🏦 Total Gross</small><div class="amt" id="total">TZS 0</div><small><span id="count">0</span> staff</small></div><div class="card"><small>💰 Total NET Pay</small><div class="amt" id="netTotal" style="color:#059669">TZS 0</div><small>Kulipwa wafanyakazi</small></div><div class="card"><small>🏛️ Total Deductions + Employer</small><div class="amt" id="totalDed">TZS 0</div><small>PAYE+WCF+SDL+NSSF</small></div></div>
-<div class="cards" style="grid-template-columns:1fr 1fr"><div class="card"><b style="font-size:11px">Breakdown </b><div style="font-size:10px;line-height:18px;margin-top:6px"><div>Basic + Allowances = <b>Gross</b></div><div>Pension 10% = <b id="sPension">0</b></div><div>Taxable = Gross - Pension</div><div>PAYE = <b id="sPAYE">0</b> → TRA</div><div>NHIF = <b id="sNHIF">0</b> → NHIF</div><div>WCF 0.5% = <b id="sWCF">0</b> → WCF</div><div>Pension Employer 10% = <b id="sPensionEmp">0</b></div><div>SDL 4% = <b id="sSDL">0</b> → TRA</div></div></div><div class="card"><b style="font-size:11px">Staff - Real Formula</b><table><thead><tr><th>STAFF</th><th>NET</th><th>🗑️</th></tr></thead><tbody id="staffBody"></tbody></table><button class="btnD" style="width:100%;margin-top:6px" onclick="deleteAll()">🗑️ FUTA WOTE</button></div></div>
+<div class="cards" style="grid-template-columns:1fr 1fr"><div class="card"><b style="font-size:11px">Breakdown </b><div style="font-size:10px;line-height:18px;margin-top:6px"><div>Basic + Allowances = <b>Gross</b></div><div>Pension 10% = <b id="sPension">0</b></div><div>Taxable = Gross - Pension</div><div>PAYE = <b id="sPAYE">0</b> → TRA</div><div>NHIF = <b id="sNHIF">0</b> → NHIF</div><div>WCF 0.5% = <b id="sWCF">0</b> → WCF</div><div>Pension Employer 10% = <b id="sPensionEmp">0</b></div><div>SDL 3.5% = <b id="sSDL">0</b> → TRA</div></div></div><div class="card"><b style="font-size:11px">Staff - Real Formula</b><table><thead><tr><th>STAFF</th><th>NET</th><th>🗑️</th></tr></thead><tbody id="staffBody"></tbody></table><button class="btnD" style="width:100%;margin-top:6px" onclick="deleteAll()">🗑️ FUTA WOTE</button></div></div>
 </div>
 
 <div id="staff" class="tab"><div class="card"><h3>👥 Ongeza -Mfanyakazi </h3>
@@ -81,18 +81,18 @@ table{width:100%;border-collapse:collapse;font-size:10px}th{padding:6px 3px;bord
 <div style="margin-top:8px;padding:8px;background:#f0fdf4;border-radius:8px;font-size:10px"><b>Formula ya Sheet:</b> Gross=Basic+Allow | Pension=Gross*10% | Taxable=Gross-Pension | PAYE (bracket) | NHIF (tier) | NET=Taxable-PAYE-NHIF-Life-HESLB</div>
 </div></div>
 
-<div id="payroll" class="tab"><div class="card"><h3>💰 Payroll </h3><div style="overflow-x:auto"><table><thead><tr><th>S/N</th><th>Employee</th><th>Basic</th><th>Allow</th><th>Gross</th><th>Pension 10%</th><th>Taxable</th><th>PAYE</th><th>NHIF</th><th>Life/HESLB</th><th>NET PAY</th><th>WCF 0.5%</th><th>Pension Emp 10%</th><th>SDL 4%</th><th>🗑️</th></tr></thead><tbody id="payBody"></tbody></table></div><div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap"><button class="btnO" style="width:auto" onclick="exportExcel()">📊 Export  - Excel</button><button class="btnD" onclick="deleteAll()">🗑️ FUTA WOTE</button><button class="btnS" onclick="editLast()" style="background:#f59e0b">✏️ Hariri wa Mwisho</button></div></div></div>
+<div id="payroll" class="tab"><div class="card"><h3>💰 Payroll </h3><div style="overflow-x:auto"><table><thead><tr><th>S/N</th><th>Employee</th><th>Basic</th><th>Allow</th><th>Gross</th><th>Pension 10%</th><th>Taxable</th><th>PAYE</th><th>NHIF</th><th>Life/HESLB</th><th>NET PAY</th><th>WCF 0.5%</th><th>Pension Emp 10%</th><th>SDL 3.5%</th><th>🗑️</th></tr></thead><tbody id="payBody"></tbody></table></div><div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap"><button class="btnO" style="width:auto" onclick="exportExcel()">📊 Export  - Excel</button><button class="btnD" onclick="deleteAll()">🗑️ FUTA WOTE</button><button class="btnS" onclick="editLast()" style="background:#f59e0b">✏️ Hariri wa Mwisho</button></div></div></div>
 
 <div id="accounting" class="tab"><div class="card"><h3>📒 Accounting - WCF + SDL + Pension Employer </h3>
 <div class="controlBox"><b>🏢 Control Numbers </b><div class="grid2" style="margin-top:6px"><input id="tinNo" placeholder="TIN No - 123-456-789"><input id="traControl" placeholder="TRA PAYE Control No"><input id="nssfNo" placeholder="NSSF Employer No"><input id="nssfControl" placeholder="NSSF Control No"><input id="nhifNo" placeholder="NHIF Employer No"><input id="nhifControl" placeholder="NHIF Control No"><input id="wcfNo" placeholder="WCF No"><input id="wcfControl" placeholder="WCF Control No - 0.5%"></div><button class="btnO" style="background:#0f1f3d" onclick="saveControls()">💾 HIFADHI CONTROL NUMBERS</button></div>
 
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px">
-<div style="background:#fef3c7;padding:8px;border-radius:10px"><b>TRA - PAYE + SDL</b><div class="amtS" id="accPAYE">TZS 0</div><small>PAYE</small><div class="amtS" id="accSDL">TZS 0</div><small>SDL 4%</small><small>Ctrl: <span id="showTraControl">-</span></small></div>
+<div style="background:#fef3c7;padding:8px;border-radius:10px"><b>TRA - PAYE + SDL</b><div class="amtS" id="accPAYE">TZS 0</div><small>PAYE</small><div class="amtS" id="accSDL">TZS 0</div><small>SDL 3.5%</small><small>Ctrl: <span id="showTraControl">-</span></small></div>
 <div style="background:#dbeafe;padding:8px;border-radius:10px"><b>NSSF - Emp + Employer</b><div class="amtS" id="accNSSF">TZS 0</div><small>Employee 10%</small><div class="amtS" id="accNSSF_Emp">TZS 0</div><small>Employer 10%</small><small>No: <span id="showNssf">-</span></small></div>
 <div style="background:#dcfce7;padding:8px;border-radius:10px"><b>WCF + NHIF</b><div class="amtS" id="accWCF">TZS 0</div><small>WCF 0.5%</small><div class="amtS" id="accNHIF">TZS 0</div><small>NHIF</small><small>WCF: <span id="showWcf">-</span></small></div>
 </div>
 
-<div style="margin-top:10px"><b>Breakdown</b><div style="overflow-x:auto"><table><thead><tr><th>Mfanyakazi</th><th>Gross</th><th>Pension 10%</th><th>Taxable</th><th>PAYE→TRA</th><th>WCF 0.5%</th><th>Pension Emp</th><th>SDL 4%</th><th>NET</th></tr></thead><tbody id="accBody"></tbody></table></div></div>
+<div style="margin-top:10px"><b>Breakdown</b><div style="overflow-x:auto"><table><thead><tr><th>Mfanyakazi</th><th>Gross</th><th>Pension 10%</th><th>Taxable</th><th>PAYE→TRA</th><th>WCF 0.5%</th><th>Pension Emp</th><th>SDL 3.5%</th><th>NET</th></tr></thead><tbody id="accBody"></tbody></table></div></div>
 </div></div>
 
 <div id="banking" class="tab"><div class="card"><h3>🏦 Bank API - BYOK - Kila Kampuni API Yake</h3><div class="apiBox"><b>1. NMB/CRDB Corporate API</b><input id="bankNameConf" placeholder="Bank - NMB"><input id="corpAcc" placeholder="Corporate Acc - 0152..."><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="API Secret"></div><div class="apiBox" style="margin-top:8px;background:#4a1a00"><b>2. M-Pesa Business - Vodacom/Tigo/Airtel/Halopesa/Yas</b><input id="mpesaTill" placeholder="Till No - 5xxxxx"><input id="mpesaApiKey" placeholder="M-Pesa API Key"></div><div class="apiBox" style="margin-top:8px;background:#0f3d2e"><b>3. Beem SMS - ya Kampuni </b><input id="beemKey" placeholder="Beem API Key"><input id="beemSecret" placeholder="Beem Secret"><small>Kampuni ndio inalipia </small></div><button class="btnO" onclick="saveBankAPI()">🔒 HIFADHI API ZANGU</button><div style="margin-top:8px;padding:8px;background:#f0fdf4;border-radius:8px;font-size:10px"><b>Status:</b> <span id="apiStatus">Simulation</span><br>Subscription TZS 20k/month + SMS markup + Bank fee markup</div></div></div>
@@ -211,7 +211,7 @@ function render(){
    let net= taxable - paye - nhif - life - heslb - other;
    let wcf= gross * 0.005;
    let pensionEmp= gross * 0.1;
-   let sdl= gross * 0.04;
+   let sdl= gross * 0.035;
    totalGross+=gross;totalNet+=net;totalPAYE+=paye;totalNHIF+=nhif;totalWCF+=wcf;totalPensionEmp+=pensionEmp;totalSDL+=sdl;totalPension+=pension;
  });
  document.getElementById('total').innerText='TZS '+Math.round(totalGross).toLocaleString();
@@ -330,14 +330,14 @@ function loginAgain(){
 
 function exportExcel(){
  if(emps.length==0)return alert('Hakuna data!');
- let csv="S/N,Employee,Basic Monthly Salary,All Allowances,Total Gross Salary,Employee Pension Deduction,Total Taxable Salary,PAYE,NHIF CONTRIBUTION,DEDUCTION/LIFE ASSURANCE,HESLB LOAN DEDUCTION,Other Deduction,NET PAY,WCF 0.5%,Pension Employer 10%,SDL 4%,Department,Pay Method,Phone/Bank,Account Name,Company,TIN,TRA Control,NSSF No,WCF No\n";
+ let csv="S/N,Employee,Basic Monthly Salary,All Allowances,Total Gross Salary,Employee Pension Deduction,Total Taxable Salary,PAYE,NHIF CONTRIBUTION,DEDUCTION/LIFE ASSURANCE,HESLB LOAN DEDUCTION,Other Deduction,NET PAY,WCF 0.5%,Pension Employer 10%,SDL 3.5%,Department,Pay Method,Phone/Bank,Account Name,Company,TIN,TRA Control,NSSF No,WCF No\n";
  emps.forEach((e,i)=>{
    let basic=Number(e.basic),allow=Number(e.allow),gross=basic+allow,pension=gross*0.1,taxable=gross-pension,paye=calcPAYE(taxable),nhif=calcNHIF(gross),life=Number(e.life||0),heslb=Number(e.heslb||0),other=Number(e.otherDed||0),net=taxable-paye-nhif-life-heslb-other,wcf=gross*0.005,pensionEmp=gross*0.1,sdl=gross*0.04;
    csv+=`${i+1},"${e.name}",${basic},${allow},${gross},${pension},${taxable},${paye},${nhif},${life},${heslb},${other},${net},${wcf},${pensionEmp},${sdl},"${e.dept||''}","${e.payMethod}","${e.phone||e.accNumber||''}","${e.accName||''}","${currentCompany}","${controls.tinNo||''}","${controls.traControl||''}","${controls.nssfNo||''}","${controls.wcfNo||''}"\n`;
  });
  let b=new Blob([csv],{type:'text/csv'});let u=URL.createObjectURL(b);let a=document.createElement('a');a.href=u;a.download=`PAYROLL_${currentCompany}_${new Date().toISOString().slice(0,10)}.csv`;a.click();
 }
-function runPayroll(){let t=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);if(!t)return alert('Ongeza wafanyakazi!');alert(`✅ PAYROLL - MODEL\n\nWafanyakazi: ${emps.length}\nGross: TZS ${t.toLocaleString()}\n\nFormula:\nGross = Basic + Allow\nPension 10% = Gross*10%\nTaxable = Gross - Pension\nPAYE = Bracket (TRA)\nNHIF = Tiered\nWCF 0.5% = Gross*0.005\nPension Emp 10% = Gross*10%\nSDL 4% = Gross*4%\nNET = Taxable - PAYE - NHIF - Life - HESLB\n\nExcel yako !`)}
+function runPayroll(){let t=emps.reduce((s,e)=>s+(Number(e.basic)+Number(e.allow)),0);if(!t)return alert('Ongeza wafanyakazi!');alert(`✅ PAYROLL - MODEL\n\nWafanyakazi: ${emps.length}\nGross: TZS ${t.toLocaleString()}\n\nFormula:\nGross = Basic + Allow\nPension 10% = Gross*10%\nTaxable = Gross - Pension\nPAYE = Bracket (TRA)\nNHIF = Tiered\nWCF 0.5% = Gross*0.005\nPension Emp 10% = Gross*10%\nSDL 3.5% = Gross*4%\nNET = Taxable - PAYE - NHIF - Life - HESLB\n\nExcel yako !`)}
 render();
 </script>
 </body></html>
